@@ -56,13 +56,10 @@ O projeto atende aos seguintes requisitos estabelecidos pela disciplina:
 
 Inclua aqui algumas capturas de tela da interface gráfica do jogo, conforme apresentado na Figura 2.
 
-![Captura de Tela 1](screenshot1.png)
-![Captura de Tela 2](screenshot2.png)
+![Captura de Tela 1](mapa.PNG)
+![Captura de Tela 2](mapa2.PNG)
 
 ## Contribuições
 
 Contribuições são bem-vindas. Se encontrar problemas ou tiver sugestões, sinta-se à vontade para abrir uma _issue_.
 
-## Licença
-
-Este projeto está licenciado sob a Licença MIT - veja o arquivo [LICENSE](LICENSE) para mais detalhes.
