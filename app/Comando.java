@@ -19,7 +19,7 @@
 
 public class Comando
 {
-    private String palavraDeComando;
+    private PalavraComando palavraDeComando;
     private String segundaPalavra;
 
     /**
@@ -29,7 +29,7 @@ public class Comando
      * 						  o comando nao foi reconhecido
      * @param segundaPalavra A segunda palavra do comando.
      */
-    public Comando(String primeiraPalavra, String segundaPalavra)
+    public Comando(PalavraComando primeiraPalavra, String segundaPalavra)
     {
         palavraDeComando = primeiraPalavra;
         this.segundaPalavra = segundaPalavra;
@@ -40,7 +40,7 @@ public class Comando
      * Se o comando nao foi entendido, o resultado eh null.
      * @return A palavra de comando.
      */
-    public String getPalavraDeComando()
+    public PalavraComando getPalavraDeComando()
     {
         return palavraDeComando;
     }
@@ -59,7 +59,7 @@ public class Comando
      */
     public boolean ehDesconhecido()
     {
-        return (palavraDeComando == null);
+        return (palavraDeComando == PalavraComando.DESCONHECIDO);
     }
 
     /**

@@ -1,3 +1,5 @@
+import java.util.HashMap;
+
 /**
  * Esta classe eh parte da aplicacao "World of Zuul".
  * "World of Zuul" eh um jogo de aventura muito simples, baseado em texto.  
@@ -12,16 +14,32 @@
 public class PalavrasComando
 {
     // um vetor constante que guarda todas as palavras de comandos validas
-    private static final String[] comandosValidos = {
-        "ir", "sair", "ajuda", "olhar"
-    };
+    private HashMap<String, PalavraComando> comandosValidos;
 
     /**
      * Construtor - inicializa as palavras de comando.
      */
     public PalavrasComando()
     {
-        // nada a fazer no momento...
+       comandosValidos = new HashMap<>();
+       for(PalavraComando comando : PalavraComando.values()) {
+           if(comando != PalavraComando.DESCONHECIDO) {
+               comandosValidos.put(comando.toString(), comando);
+           }
+       }
+    }
+
+    /*
+        * Encontra o PalavraComando correspondente a uma palavra.
+        * @param palavra String a ser procurada.
+        * @return PalavraComando correspondente a palavra, ou PalavraComando.DESCONHECIDO se a palavra nao eh conhecida.
+     */
+    public PalavraComando getComando(String palavra) {
+        PalavraComando comando = comandosValidos.get(palavra);
+        if (comando != null) {
+            return comando;
+        }
+        return PalavraComando.DESCONHECIDO;
     }
 
     /**
@@ -31,16 +49,11 @@ public class PalavrasComando
      */
     public boolean ehComando(String umaString)
     {
-        for(int i = 0; i < comandosValidos.length; i++) {
-            if(comandosValidos[i].equals(umaString))
-                return true;
-        }
-        // se chegamos aqui, a string nao foi encontrada nos comandos.
-        return false;
+        return comandosValidos.containsKey(umaString);
     }
 
     public void imprimirComandos() {
-        for (String comando : comandosValidos) {
+        for (String comando : comandosValidos.keySet()) {
             System.out.print(comando + " ");
         }
         System.out.println();

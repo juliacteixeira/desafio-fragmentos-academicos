@@ -89,7 +89,7 @@ public class Jogo
         System.out.println();
         System.out.println("Bem-vindo ao World of Zuul!");
         System.out.println("World of Zuul eh um novo jogo de aventura, incrivelmente chato.");
-        System.out.println("Digite 'ajuda' se voce precisar de ajuda.");
+        System.out.println("Digite '" + PalavraComando.AJUDA + "' se voce precisar de ajuda.");
         System.out.println();
         
         imprimirInformacoesAmbiente();
@@ -109,17 +109,17 @@ public class Jogo
             return false;
         }
 
-        String palavraDeComando = comando.getPalavraDeComando();
-        if (palavraDeComando.equals("ajuda")) {
+        PalavraComando palavraDeComando = comando.getPalavraDeComando();
+        if (palavraDeComando == PalavraComando.AJUDA) {
             imprimirAjuda();
         }
-        else if (palavraDeComando.equals("ir")) {
+        else if (palavraDeComando == PalavraComando.IR) {
             irParaAmbiente(comando);
         }
-        else if(palavraDeComando.equals("olhar")) {
+        else if(palavraDeComando == PalavraComando.OLHAR) {
             olhar();
         }
-        else if (palavraDeComando.equals("sair")) {
+        else if (palavraDeComando == PalavraComando.SAIR) {
             querSair = sair(comando);
         }
 
