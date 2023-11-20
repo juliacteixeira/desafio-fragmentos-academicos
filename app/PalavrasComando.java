@@ -13,7 +13,7 @@ public class PalavrasComando
 {
     // um vetor constante que guarda todas as palavras de comandos validas
     private static final String[] comandosValidos = {
-        "ir", "sair", "ajuda"
+        "ir", "sair", "ajuda", "olhar"
     };
 
     /**
@@ -37,5 +37,12 @@ public class PalavrasComando
         }
         // se chegamos aqui, a string nao foi encontrada nos comandos.
         return false;
+    }
+
+    public void imprimirComandos() {
+        for (String comando : comandosValidos) {
+            System.out.print(comando + " ");
+        }
+        System.out.println();
     }
 }

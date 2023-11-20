@@ -1,3 +1,6 @@
+import java.util.HashMap;
+import java.util.Set;
+
 /**
  * Classe Ambiente - um ambiente em um jogo adventure.
  *
@@ -15,11 +18,8 @@
  */
 public class Ambiente 
 {
-    public String descricao;
-    public Ambiente saidaNorte;
-    public Ambiente saidaSul;
-    public Ambiente saidaLeste;
-    public Ambiente saidaOeste;
+    private String descricao;
+    private HashMap<String, Ambiente> saidas;
 
     /**
      * Cria um ambiente com a "descricao" passada. Inicialmente, ele
@@ -30,29 +30,41 @@ public class Ambiente
      * "um jardim aberto".
      * @param descricao A descricao do ambiente.
      */
-    public Ambiente(String descricao) 
-    {
+    public Ambiente(String descricao) {
         this.descricao = descricao;
+        saidas = new HashMap<>();
     }
 
     /**
      * Define as saidas do ambiente. Cada direcao ou leva a um
      * outro ambiente ou eh null (nenhuma saida para la).
-     * @param norte A saida norte.
-     * @param leste A saida leste.
-     * @param sul A saida sul.
-     * @param oeste A saida oeste.
+     * @param direcao A direcao da saida.
+     * @param ambiente O ambiente de destino.
      */
-    public void ajustarSaidas(Ambiente norte, Ambiente leste, Ambiente sul, Ambiente oeste) 
-    {
-        if(norte != null)
-            saidaNorte = norte;
-        if(leste != null)
-            saidaLeste = leste;
-        if(sul != null)
-            saidaSul = sul;
-        if(oeste != null)
-            saidaOeste = oeste;
+    public void ajustarSaida(String direcao, Ambiente ambiente) {
+        saidas.put(direcao, ambiente);
+    }
+
+    /**
+     * Dada uma direcao, retorna o ambiente em tal direcao.
+     * @param direcao A direcao da saida.
+     * @return O ambiente na direcao especificada.
+     */
+    public Ambiente getSaida(String direcao) {
+        return saidas.get(direcao);
+    }
+
+    /**
+     * @return A descricao das saidas do ambiente.
+     */
+    public String getSaidaString() {
+        String saidaString = "Saidas: ";
+        Set<String> chaves = saidas.keySet();
+        for (String saida : chaves) {
+            saidaString += saida + " ";
+        }
+
+        return saidaString;
     }
 
     /**
@@ -63,4 +75,10 @@ public class Ambiente
         return descricao;
     }
 
+    /**
+     * @return A descricao completa do ambiente, incluindo as saidas.
+     */
+    public String getDescricaoCompleta() {
+        return "Voce esta " + getDescricao() + ".\n" + getSaidaString();
+    }
 }

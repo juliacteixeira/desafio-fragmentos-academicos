@@ -63,4 +63,11 @@ public class Analisador
             return new Comando(null, palavra2); 
         }
     }
+
+    /**
+     * Chama o metodo imprimirComandos da classe PalavrasComando, evitando o aclopamento implicito.
+     */
+    public void mostrarComandos() {
+        palavrasDeComando.imprimirComandos();
+    }
 }
