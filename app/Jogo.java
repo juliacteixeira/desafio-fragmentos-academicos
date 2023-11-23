@@ -35,7 +35,7 @@ public class Jogo
     private void criarAmbientes()
     {
         Ambiente fora, anfiteatro, cantina, laboratorio, escritorio;
-      
+    
         // cria os ambientes
         fora = new Ambiente("do lado de fora da entrada principal de uma universidade");
         anfiteatro = new Ambiente("no anfiteatro");
