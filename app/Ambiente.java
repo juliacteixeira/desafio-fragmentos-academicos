@@ -1,3 +1,4 @@
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Set;
 
@@ -20,6 +21,7 @@ public class Ambiente
 {
     private String descricao;
     private HashMap<String, Ambiente> saidas;
+    private ArrayList<Pendrive> pendrives;
 
     /**
      * Cria um ambiente com a "descricao" passada. Inicialmente, ele
@@ -33,6 +35,7 @@ public class Ambiente
     public Ambiente(String descricao) {
         this.descricao = descricao;
         saidas = new HashMap<>();
+        pendrives = new ArrayList<>();
     }
 
     /**
@@ -80,5 +83,17 @@ public class Ambiente
      */
     public String getDescricaoCompleta() {
         return "Voce esta " + getDescricao() + ".\n" + getSaidaString();
+    }
+
+    public void adicionarPendrives(TrioPendrives trio) {
+        pendrives.add(trio.getP1());
+        pendrives.add(trio.getP2());
+        pendrives.add(trio.getP3());
+    }
+
+    public void showPendrives() {
+        for(int i = 0; i < pendrives.size(); i++) {
+            System.out.println("Pendrive " + (i + 1));
+        }
     }
 }

@@ -1,3 +1,7 @@
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+
 /**
  *  Essa eh a classe principal da aplicacao "World of Zull".
  *  "World of Zuul" eh um jogo de aventura muito simples, baseado em texto.
@@ -19,30 +23,35 @@ public class Jogo
 {
     private Analisador analisador;
     private Ambiente ambienteAtual;
+    private Disciplinas disciplinas;
+    // private Ambientes ambientes;
+    private Pendrives pendrives;
         
     /**
      * Cria o jogo e incializa seu mapa interno.
      */
     public Jogo() 
     {
-        criarAmbientes();
         analisador = new Analisador();
+
+        disciplinas = new Disciplinas();
+
+        pendrives = new Pendrives(disciplinas.getDisciplinas(), 5);
+
+        criarAmbientes();
+        // ambientes = new Ambientes(disciplinas.getDisciplinas());
     }
 
-    /**
-     * Cria todos os ambientes e liga as saidas deles
-     */
-    private void criarAmbientes()
-    {
+    private void criarAmbientes() {
         Ambiente fora, anfiteatro, cantina, laboratorio, escritorio;
-    
+
         // cria os ambientes
         fora = new Ambiente("do lado de fora da entrada principal de uma universidade");
         anfiteatro = new Ambiente("no anfiteatro");
         cantina = new Ambiente("na cantina do campus");
         laboratorio = new Ambiente("no laboratorio de computacao");
         escritorio = new Ambiente("na sala de administracao dos computadores");
-        
+
         // inicializa as saidas dos ambientes
         fora.ajustarSaida("leste", anfiteatro);
         fora.ajustarSaida("sul", laboratorio);
@@ -54,13 +63,22 @@ public class Jogo
         escritorio.ajustarSaida("oeste", laboratorio);
 
         ambienteAtual = fora;  // o jogo comeca do lado de fora
+
+        List<TrioPendrives> trioPendrives = pendrives.getTrioPendrives();
+
+        fora.adicionarPendrives(trioPendrives.get(0));
+        anfiteatro.adicionarPendrives(trioPendrives.get(1));
+        cantina.adicionarPendrives(trioPendrives.get(2));
+        laboratorio.adicionarPendrives(trioPendrives.get(3));
+        escritorio.adicionarPendrives(trioPendrives.get(4));
     }
 
     /**
      *  Rotina principal do jogo. Fica em loop ate terminar o jogo.
      */
     public void jogar() 
-    {            
+    {
+
         imprimirBoasVindas();
 
         // Entra no loop de comando principal. Aqui nos repetidamente lemos
@@ -79,6 +97,7 @@ public class Jogo
      */
     private void imprimirInformacoesAmbiente() {
         System.out.println(ambienteAtual.getDescricaoCompleta());
+        ambienteAtual.showPendrives();
     }
 
     /**

@@ -18,8 +18,8 @@
 public class PendriveDisciplina extends Pendrive {
     private Disciplina disciplina;
 
-    public PendriveDisciplina(Disciplina disciplina, int fragmentos) {
-        super.setFragmentos(fragmentos);
+    public PendriveDisciplina(Disciplina disciplina, boolean aberto) {
+        super.setFragmentos(aberto);
         this.disciplina = disciplina;
     }
 

@@ -16,28 +16,18 @@
  * @version 2023.11.23
  */
 public class PendriveTempo extends Pendrive {
-    private int tempoAdicional;
-    private int tempoReduzido;
+    private int tempo;
 
-    public PendriveTempo(int fragmentos, int tempoAdicional, int tempoReduzido) {
-        super.setFragmentos(fragmentos);
-        this.tempoAdicional = tempoAdicional;
-        this.tempoReduzido = tempoReduzido;
+    public PendriveTempo(boolean aberto, int tempo) {
+        super.setFragmentos(aberto);
+        this.tempo = tempo;
     }
 
-    public int getTempoAdicional() {
-        return tempoAdicional;
+    public int getTempo() {
+        return tempo;
     }
 
-    public void setTempoAdicional(int tempoAdicional) {
-        this.tempoAdicional = tempoAdicional;
-    }
-
-    public int getTempoReduzido() {
-        return tempoReduzido;
-    }
-
-    public void setTempoReduzido(int tempoReduzido) {
-        this.tempoReduzido = tempoReduzido;
+    public void setTempo(int tempo) {
+        this.tempo = tempo;
     }
 }

@@ -15,14 +15,23 @@
  * @author  João Dias
  * @version 2023.11.23
  */
-public abstract class Pendrive {
-    private int fragmentos;
+public abstract class Pendrive implements Cloneable{
+    private boolean aberto;
 
-    public int getFragmentos() {
-        return fragmentos;
+    public boolean getFragmentos() {
+        return aberto;
     }
 
-    public void setFragmentos(int fragmentos) {
-        this.fragmentos = fragmentos;
+    public void setFragmentos(boolean aberto) {
+        this.aberto = aberto;
+    }
+
+    @Override
+    public Pendrive clone() {
+        try {
+            return (Pendrive) super.clone();
+        } catch (CloneNotSupportedException e) {
+            throw new AssertionError();
+        }
     }
 }
