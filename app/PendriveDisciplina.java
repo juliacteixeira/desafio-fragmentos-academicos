@@ -1,34 +1,41 @@
 /**
- * Esta classe eh parte da aplicacao "World of Zuul".
- * "World of Zuul" eh um jogo de aventura muito simples, baseado em texto.  
- * 
- * Esse analisador le a entrada do usuario e tenta interpreta-la como um
- * comando "Adventure". Cada vez que eh chamado ele le uma linha do terminal
- * e tenta interpretar a linha como um comando de duas palavras. Ele retorna
- * o comando como um objeto da classe Comando.
+ * Essa classe representa um pendrive de disciplina.
+ * Ela recebe uma disciplina e, ao ser aberto, adiciona um fragmento de trabalho a disciplina.
+ * Antes da adição do fragmento, é verificado se o trabalho já está completo. Caso esteja, o fragmento não é adicionado.
  *
- * O analisador tem um conjunto de palavras de comando conhecidas. Ele compara
- * a entrada do usuario com os comandos conhecidos, e se a entrada nao eh um
- * dos comandos conhecidos, ele retorna um objeto comando que eh marcado como
- * um comando desconhecido.
- * 
  * @author  João Dias
  * @version 2023.11.23
  */
 public class PendriveDisciplina extends Pendrive {
     private Disciplina disciplina;
 
-    public PendriveDisciplina(Disciplina disciplina, boolean aberto) {
-        super.setFragmentos(aberto);
+    /**
+     * @param disciplina A disciplina que o pendrive pertence.
+     */
+    public PendriveDisciplina(Disciplina disciplina) {
         this.disciplina = disciplina;
     }
 
-    public Disciplina getDisciplina() {
-        return disciplina;
+    /**
+     * Abre o Pendrndrive da Disciplina na qual ele pertence.
+     * Muda o atributo aberto para true e adiciona um fragmento de trabalho a disciplina, caso o trabalho não esteja completo.
+     */
+    public void abrir() {
+        super.setAberto(true);
+        Trabalho disciplinaTrabalho = disciplina.getTrabalho();
+
+        if(!disciplinaTrabalho.estaCompleto()) {
+            disciplinaTrabalho.setFragmentos(disciplinaTrabalho.getFragmentos() + 1);
+            exibirMensagemPendrive();
+        }
     }
 
-    public void setDisciplina(Disciplina disciplina) {
-        this.disciplina = disciplina;
+    /**
+     * Exibe uma mensagem informando que o pendrive foi aberto e que um fragmento de trabalho foi adicionado a disciplina.
+     */
+    private void exibirMensagemPendrive() {
+        String disciplinaNome = disciplina.getNome();
+        System.out.printf("Voce encontrou um pendrive da disciplina %s! Ele possui um fragmento de trabalho.\n", disciplinaNome);
     }
 }
 

@@ -1,33 +1,52 @@
 /**
- * Esta classe eh parte da aplicacao "World of Zuul".
- * "World of Zuul" eh um jogo de aventura muito simples, baseado em texto.  
- * 
- * Esse analisador le a entrada do usuario e tenta interpreta-la como um
- * comando "Adventure". Cada vez que eh chamado ele le uma linha do terminal
- * e tenta interpretar a linha como um comando de duas palavras. Ele retorna
- * o comando como um objeto da classe Comando.
+ * Essa classe faz a criacao do trabalho de cada Disciplina. Pois nesse contexto temos que cada Disciplina eh composta por um trabalho.
+ * Definimos uma variavel FRAGMENTOS_MAX que eh a quantidade maxima de fragmentos que um trabalho pode ter, podendo ser facilmente alterada.
+ * Pra setar uma quantidade de fragmentos, usamos o metodo setFragmentos, que verifica se o trabalho esta completo e se a quantidade de fragmentos
+ * eh menor ou igual a FRAGMENTOS_MAX.
  *
- * O analisador tem um conjunto de palavras de comando conhecidas. Ele compara
- * a entrada do usuario com os comandos conhecidos, e se a entrada nao eh um
- * dos comandos conhecidos, ele retorna um objeto comando que eh marcado como
- * um comando desconhecido.
- * 
  * @author  João Dias
  * @version 2023.11.23
  */
 public class Trabalho {
     private int fragmentos;
+    private final int FRAGMENTOS_MAX = 2;
 
-    public Trabalho(int fragmentos) {
-        this.fragmentos = fragmentos;
+    /**
+     * Crie e inicializa a quantidade de fragmentos com 0.
+     */
+    public Trabalho() {
+        this.fragmentos = 0;
     }
 
+    /**
+     * @return fragmentos quantidade de fragmentos que o trabalho tem.
+     */
     public int getFragmentos() {
         return fragmentos;
     }
 
+    /**
+     * @return FRAGMENTOS_MAX quantidade maxima de fragmentos que um trabalho pode ter.
+     */
+    public int getFragmentosMax() {
+        return FRAGMENTOS_MAX;
+    }
+
+    /**
+     * @return true se o trabalho estiver completo, false caso contrario.
+     */
+    public boolean estaCompleto() {
+        return fragmentos == FRAGMENTOS_MAX;
+    }
+
+    /**
+     * @param fragmentos quantidade de fragmentos que o trabalho tera.
+     * Faz a verificacao se o trabalho esta completo e se a quantidade de fragmentos eh menor ou igual a FRAGMENTOS_MAX.
+     */
     public void setFragmentos(int fragmentos) {
-        this.fragmentos = fragmentos;
+        if(!estaCompleto() && fragmentos <= FRAGMENTOS_MAX) {
+            this.fragmentos = fragmentos;
+        }
     }
 }
 

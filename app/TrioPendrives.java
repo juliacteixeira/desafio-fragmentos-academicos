@@ -1,3 +1,10 @@
+/**
+ * Essa classe representa um trio de Pendrives.
+ * Poderia ser feito usando Enum?
+ *
+ * @author Caio Souza
+ * @version 2023.11.23
+ */
 public class TrioPendrives {
     private Pendrive p1;
     private Pendrive p2;
@@ -10,14 +17,14 @@ public class TrioPendrives {
     }
 
     public Pendrive getP1() {
-        return p1.clone();
+        return p1;
     }
 
     public Pendrive getP2() {
-        return p2.clone();
+        return p2;
     }
 
     public Pendrive getP3() {
-        return p3.clone();
+        return p3;
     }
 }
