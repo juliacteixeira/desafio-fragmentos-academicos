@@ -1,4 +1,5 @@
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Set;
 
@@ -17,8 +18,7 @@ import java.util.Set;
  * @author  Michael Kölling and David J. Barnes (traduzido por Julio Cesar Alves)
  * @version 2011.07.31 (2016.02.01)
  */
-public class Ambiente 
-{
+public class Ambiente { // Falta implementar Cloneable
     private String descricao;
     private HashMap<String, Ambiente> saidas;
     private ArrayList<Pendrive> pendrives;
@@ -92,6 +92,7 @@ public class Ambiente
     }
 
     public void showPendrives() {
+        System.out.println("Pendrives: ");
         for(int i = 0; i < pendrives.size(); i++) {
             System.out.println("Pendrive " + (i + 1));
         }

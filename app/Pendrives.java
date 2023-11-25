@@ -11,6 +11,7 @@ public class Pendrives {
 
     public Pendrives(List<Disciplina> disciplinas, int quantidadeAmbientes) {
         trioPendrives = new ArrayList<>();
+        quantidadeAmbientes--;
 
         ArrayList<Pendrive> pendrives = new ArrayList<>();
         random = new Random();
@@ -21,8 +22,8 @@ public class Pendrives {
             pendrives.add(new PendriveDisciplina(disciplina, false));
         }
 
-        // Calcula a quantidade de pendrives de tempo necessários
-        int quantidadePendrivesTempo = quantidadeAmbientes * QUANTIDADE_PENDRIVE_POR_AMBIENTE - pendrives.size();
+        // Calcula a quantidade de pendrives de tempo necessários e remove os pendrives para o ambiente de fora.
+        int quantidadePendrivesTempo = (quantidadeAmbientes * QUANTIDADE_PENDRIVE_POR_AMBIENTE - pendrives.size());
 
         // Cria os pendrives de tempo
         for (int i = 0; i < quantidadePendrivesTempo / 2; i++) {

@@ -22,10 +22,8 @@ import java.util.List;
 public class Jogo 
 {
     private Analisador analisador;
-    private Ambiente ambienteAtual;
-    private Disciplinas disciplinas;
-    // private Ambientes ambientes;
-    private Pendrives pendrives;
+    private Ambientes ambientes;
+    private Jogador jogador;
         
     /**
      * Cria o jogo e incializa seu mapa interno.
@@ -34,43 +32,12 @@ public class Jogo
     {
         analisador = new Analisador();
 
-        disciplinas = new Disciplinas();
+        jogador = new Jogador();
 
-        pendrives = new Pendrives(disciplinas.getDisciplinas(), 5);
+        ambientes = new Ambientes(jogador.getDisciplinas());
 
-        criarAmbientes();
-        // ambientes = new Ambientes(disciplinas.getDisciplinas());
-    }
-
-    private void criarAmbientes() {
-        Ambiente fora, anfiteatro, cantina, laboratorio, escritorio;
-
-        // cria os ambientes
-        fora = new Ambiente("do lado de fora da entrada principal de uma universidade");
-        anfiteatro = new Ambiente("no anfiteatro");
-        cantina = new Ambiente("na cantina do campus");
-        laboratorio = new Ambiente("no laboratorio de computacao");
-        escritorio = new Ambiente("na sala de administracao dos computadores");
-
-        // inicializa as saidas dos ambientes
-        fora.ajustarSaida("leste", anfiteatro);
-        fora.ajustarSaida("sul", laboratorio);
-        fora.ajustarSaida("oeste", cantina);
-        anfiteatro.ajustarSaida("oeste", fora);
-        cantina.ajustarSaida("leste", fora);
-        laboratorio.ajustarSaida("norte", fora);
-        laboratorio.ajustarSaida("leste", escritorio);
-        escritorio.ajustarSaida("oeste", laboratorio);
-
-        ambienteAtual = fora;  // o jogo comeca do lado de fora
-
-        List<TrioPendrives> trioPendrives = pendrives.getTrioPendrives();
-
-        fora.adicionarPendrives(trioPendrives.get(0));
-        anfiteatro.adicionarPendrives(trioPendrives.get(1));
-        cantina.adicionarPendrives(trioPendrives.get(2));
-        laboratorio.adicionarPendrives(trioPendrives.get(3));
-        escritorio.adicionarPendrives(trioPendrives.get(4));
+        Ambiente ambienteInicial = ambientes.getAmbiente("fora");
+        jogador.setAmbienteAtual(ambienteInicial);
     }
 
     /**
@@ -96,8 +63,8 @@ public class Jogo
      * Imprime informacoes sobre o ambiente atual.
      */
     private void imprimirInformacoesAmbiente() {
-        System.out.println(ambienteAtual.getDescricaoCompleta());
-        ambienteAtual.showPendrives();
+        System.out.println(jogador.getAmbienteAtual().getDescricaoCompleta());
+        jogador.getAmbienteAtual().showPendrives();
     }
 
     /**
@@ -185,23 +152,23 @@ public class Jogo
         // Tenta sair do ambiente atual
         Ambiente proximoAmbiente = null;
         if(direcao.equals("norte")) {
-            proximoAmbiente = ambienteAtual.getSaida("norte");
+            proximoAmbiente = jogador.getAmbienteAtual().getSaida("norte");
         }
         if(direcao.equals("leste")) {
-            proximoAmbiente = ambienteAtual.getSaida("leste");
+            proximoAmbiente = jogador.getAmbienteAtual().getSaida("leste");
         }
         if(direcao.equals("sul")) {
-            proximoAmbiente = ambienteAtual.getSaida("sul");
+            proximoAmbiente = jogador.getAmbienteAtual().getSaida("sul");
         }
         if(direcao.equals("oeste")) {
-            proximoAmbiente = ambienteAtual.getSaida("oeste");
+            proximoAmbiente = jogador.getAmbienteAtual().getSaida("oeste");
         }
 
         if (proximoAmbiente == null) {
             System.out.println("Nao ha passagem!");
         }
         else {
-            ambienteAtual = proximoAmbiente;
+            jogador.setAmbienteAtual(proximoAmbiente);
             
             imprimirInformacoesAmbiente();
         }

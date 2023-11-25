@@ -17,6 +17,7 @@
  */
 public class Disciplina {
     private String nome;
+    private Trabalho trabalho;
 
     public Disciplina(String nome) {
         this.nome = nome;

@@ -1,4 +1,4 @@
-/*import java.util.ArrayList;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
@@ -46,11 +46,16 @@ public class Ambientes {
         List<TrioPendrives> trioPendrives = pendrives.getTrioPendrives();
         List<Ambiente> listaAmbientes = new ArrayList<>(ambientes.values());
 
+        listaAmbientes.remove(ambientes.get("fora"));
+
         for (int i = 0; i < listaAmbientes.size(); i++) {
             Ambiente ambiente = listaAmbientes.get(i);
             TrioPendrives trio = trioPendrives.get(i);
             ambiente.adicionarPendrives(trio);
         }
-
     }
-}*/
+
+    public Ambiente getAmbiente(String nomeAmbiente) {
+        return ambientes.get(nomeAmbiente);
+    }
+}
