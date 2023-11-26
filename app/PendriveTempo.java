@@ -1,43 +1,39 @@
 /**
- * Esta classe eh parte da aplicacao "World of Zuul".
- * "World of Zuul" eh um jogo de aventura muito simples, baseado em texto.  
- * 
- * Esse analisador le a entrada do usuario e tenta interpreta-la como um
- * comando "Adventure". Cada vez que eh chamado ele le uma linha do terminal
- * e tenta interpretar a linha como um comando de duas palavras. Ele retorna
- * o comando como um objeto da classe Comando.
+ * Essa classe representa um pendrive de tempo.
+ * Ela guarda um objeto Tempo, que eh passado desde a classe Jogo, Ambientes e Pendrives.
+ * Quando o pendrive eh aberto, o tempo do jogo eh alterado de acordo com o tempo do pendrive.
  *
- * O analisador tem um conjunto de palavras de comando conhecidas. Ele compara
- * a entrada do usuario com os comandos conhecidos, e se a entrada nao eh um
- * dos comandos conhecidos, ele retorna um objeto comando que eh marcado como
- * um comando desconhecido.
- * 
  * @author  João Dias
  * @version 2023.11.23
  */
 public class PendriveTempo extends Pendrive {
-    private int tempoAdicional;
-    private int tempoReduzido;
+    private int tempo;
+    private Tempo tempoJogo;
 
-    public PendriveTempo(int fragmentos, int tempoAdicional, int tempoReduzido) {
-        super.setFragmentos(fragmentos);
-        this.tempoAdicional = tempoAdicional;
-        this.tempoReduzido = tempoReduzido;
+    /**
+     * @param tempo O tempo que o pendrive ira adicionar ou remover do tempo do jogo.
+     * @param tempoJogo O objeto Tempo que eh usado no Jogo.
+     */
+    public PendriveTempo(int tempo, Tempo tempoJogo) {
+        this.tempo = tempo;
+        this.tempoJogo = tempoJogo;
     }
 
-    public int getTempoAdicional() {
-        return tempoAdicional;
+    /**
+     * Abre o Pendrive de Tempo.
+     * Muda o atributo aberto para true e adiciona ou remove o tempo do jogo.
+     */
+    public void abrir() {
+        super.setAberto(true);
+        tempoJogo.setTempoJogo(tempoJogo.getTempoJogo() + tempo);
+
+        exibirMensagemPendrive();
     }
 
-    public void setTempoAdicional(int tempoAdicional) {
-        this.tempoAdicional = tempoAdicional;
-    }
-
-    public int getTempoReduzido() {
-        return tempoReduzido;
-    }
-
-    public void setTempoReduzido(int tempoReduzido) {
-        this.tempoReduzido = tempoReduzido;
+    /**
+     * Exibe uma mensagem informando que o pendrive foi aberto e que o tempo do jogo foi alterado.
+     */
+    private void exibirMensagemPendrive() {
+        System.out.printf("Voce encontrou um pendrive de tempo! Ele possui uma %s de %d minutos.\n", tempo > 0 ? "recompensa" : "penalidade", tempo);
     }
 }
