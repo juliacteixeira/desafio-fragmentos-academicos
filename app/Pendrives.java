@@ -20,7 +20,7 @@ public class Pendrives {
     private Random random;
 
     /**
-     * Descondira o ambiente fora, cria os pendrives de cada disciplina e os pendrives de tempo. Por fim,
+     * Cria os pendrives de cada disciplina e os pendrives de tempo. Por fim,
      * ela embaralha os pendrives e os agrupa em trios.
      *
      * @param disciplinas A lista de disciplinas do jogo.
@@ -28,7 +28,6 @@ public class Pendrives {
      * @param tempo O objeto Tempo que eh usado no Jogo.
      */
     public Pendrives(List<Disciplina> disciplinas, int quantidadeAmbientes, Tempo tempo) {
-        quantidadeAmbientes--; // Descondira o ambiente fora
 
         trioPendrives = new ArrayList<>();
         ArrayList<Pendrive> pendrives = new ArrayList<>();
@@ -41,7 +40,7 @@ public class Pendrives {
         }
 
         // Calcula a quantidade de pendrives de tempo necessários
-        int quantidadePendrivesTempo = (quantidadeAmbientes * QUANTIDADE_PENDRIVE_POR_AMBIENTE - pendrives.size());
+        int quantidadePendrivesTempo = quantidadeAmbientes * QUANTIDADE_PENDRIVE_POR_AMBIENTE - pendrives.size();
 
         // Cria os pendrives de tempo
         for (int i = 0; i < quantidadePendrivesTempo / 2; i++) {

@@ -35,31 +35,65 @@ public class Ambientes {
      * Cria os ambientes e ajusta as saidas.
      */
     private void criarAmbientes() {
-        Ambiente fora, anfiteatro, cantina, laboratorio, escritorio;
+        Ambiente dispensa, quintal, salaDeJantar, cozinha, meuQuarto,
+                salaDeTv, deposito, garagem, corredor, quartoDosPais,
+                banheiroDosPais, banheiroPrincipal, oficina;
 
         // cria os ambientes
-        fora = new Ambiente("do lado de fora da entrada principal de uma universidade");
-        anfiteatro = new Ambiente("no anfiteatro");
-        cantina = new Ambiente("na cantina do campus");
-        laboratorio = new Ambiente("no laboratorio de computacao");
-        escritorio = new Ambiente("na sala de administracao dos computadores");
+        dispensa = new Ambiente("na dispensa, um labirinto de latas de feijão e pacotes de macarrão");
+        quintal = new Ambiente("no quintal, onde os gnomos de jardim ganham vida à noite");
+        salaDeJantar = new Ambiente("na sala de jantar, onde os talheres dançam no ritmo do relógio cuco");
+        cozinha = new Ambiente("na cozinha, onde as panelas sussurram segredos culinários");
+        meuQuarto = new Ambiente("no quarto de Zephyrion, um santuário de sonhos e meias perdidas");
+        salaDeTv = new Ambiente("na sala de TV, onde os personagens das séries saem da tela nas madrugadas");
+        deposito = new Ambiente("no deposito, onde tudo pode ter");
+        garagem = new Ambiente("na garagem, lar do carro que sonha em ser uma nave espacial");
+        corredor = new Ambiente("no corredor, uma pista de corrida para os fantasmas da casa");
+        quartoDosPais = new Ambiente("no quarto dos pais, um oásis de tranquilidade e sabedoria");
+        banheiroDosPais = new Ambiente("no banheiro dos pais, onde o sabonete conta histórias de espuma");
+        banheiroPrincipal = new Ambiente("no banheiro principal, um palco para concertos de chuveiro");
+        oficina = new Ambiente("na oficina, onde ferramentas dançam ao som de marteladas");
 
-        // inicializa as saidas dos ambientes
-        fora.ajustarSaida("leste", anfiteatro);
-        fora.ajustarSaida("sul", laboratorio);
-        fora.ajustarSaida("oeste", cantina);
-        anfiteatro.ajustarSaida("oeste", fora);
-        cantina.ajustarSaida("leste", fora);
-        laboratorio.ajustarSaida("norte", fora);
-        laboratorio.ajustarSaida("leste", escritorio);
-        escritorio.ajustarSaida("oeste", laboratorio);
+        // ajusta as saidas dos ambientes
+        dispensa.ajustarSaida("leste", cozinha);
+        quintal.ajustarSaida("norte", salaDeJantar);
+        quintal.ajustarSaida("leste", deposito);
+        deposito.ajustarSaida("oeste", quintal);
+        salaDeJantar.ajustarSaida("norte", cozinha);
+        salaDeJantar.ajustarSaida("leste", salaDeTv);
+        salaDeJantar.ajustarSaida("sul", quintal);
+        cozinha.ajustarSaida("oeste", dispensa);
+        cozinha.ajustarSaida("sul", salaDeJantar);
+        salaDeTv.ajustarSaida("oeste", salaDeJantar);
+        salaDeTv.ajustarSaida("norte", meuQuarto);
+        salaDeTv.ajustarSaida("leste", corredor);
+        meuQuarto.ajustarSaida("sul", salaDeTv);
+        corredor.ajustarSaida("oeste", salaDeTv);
+        corredor.ajustarSaida("norte", quartoDosPais);
+        corredor.ajustarSaida("leste", banheiroPrincipal);
+        corredor.ajustarSaida("sul", garagem);
+        garagem.ajustarSaida("norte", corredor);
+        garagem.ajustarSaida("leste", oficina);
+        oficina.ajustarSaida("oeste", garagem);
+        banheiroPrincipal.ajustarSaida("oeste", corredor);
+        quartoDosPais.ajustarSaida("sul", corredor);
+        quartoDosPais.ajustarSaida("leste", banheiroDosPais);
+        banheiroDosPais.ajustarSaida("oeste", quartoDosPais);
 
-        // adiciona os ambientes ao mapa
-        ambientes.put("fora", fora);
-        ambientes.put("anfiteatro", anfiteatro);
-        ambientes.put("cantina", cantina);
-        ambientes.put("laboratorio", laboratorio);
-        ambientes.put("escritorio", escritorio);
+        // adiciona os ambientes no hashmap
+        ambientes.put("dispensa", dispensa);
+        ambientes.put("quintal", quintal);
+        ambientes.put("salaDeJantar", salaDeJantar);
+        ambientes.put("cozinha", cozinha);
+        ambientes.put("meuQuarto", meuQuarto);
+        ambientes.put("salaDeTv", salaDeTv);
+        ambientes.put("deposito", deposito);
+        ambientes.put("garagem", garagem);
+        ambientes.put("corredor", corredor);
+        ambientes.put("quartoDosPais", quartoDosPais);
+        ambientes.put("banheiroDosPais", banheiroDosPais);
+        ambientes.put("banheiroPrincipal", banheiroPrincipal);
+        ambientes.put("oficina", oficina);
     }
 
     /**

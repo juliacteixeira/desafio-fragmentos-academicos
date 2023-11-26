@@ -40,7 +40,7 @@ public class Jogo
 
         ambientes = new Ambientes(jogador.getDisciplinas(), tempo);
 
-        Ambiente ambienteInicial = ambientes.getAmbiente("fora");
+        Ambiente ambienteInicial = ambientes.getAmbiente("meuQuarto");
         jogador.setAmbienteAtual(ambienteInicial);
     }
 
@@ -87,7 +87,7 @@ public class Jogo
         System.out.println("Bem-vindo ao Desafio dos Fragmentos Academico!");
         System.out.println("O Desafio dos Fragmentos Acadêmicos se passa nos minutos finais do segundo semestre de 2023 na Universidade Federal de Lavras.");
         System.out.println("Zephyrion, estudante de Sistemas de Informação, está sobrecarregado com disciplinas e precisa entregar quatro trabalhos a tempo.");
-        System.out.println("Ajude ele a encontrar os fragmentos dos trabalhos e entregar a tempo!");
+        System.out.println("Voce comecara a patir do quarto de Zephyrion. Ajude ele a encontrar os fragmentos dos trabalhos e entregar a tempo!");
         System.out.println("Digite '" + PalavraComando.AJUDA + "' se voce precisar de ajuda.");
         System.out.println();
         
@@ -213,11 +213,26 @@ public class Jogo
             Pendrive pendrive = jogador.getAmbienteAtual().getPendrive(index);
 
             if(pendrive.estaAberto()) System.out.println("O pendrive já foi aberto.");
-            else pendrive.abrir();
+            else pendrive.abrir(); // Polimorfismo é chamado baseado no tipo do pendrive
+
+            // Verifica se o pendrive é um pendrive de disciplina
+            if(pendrive instanceof PendriveDisciplina) teleportarMeuQuarto();
         }
         else {
             System.out.println("Nao ha um pendrive com esse numero!");
         }
+    }
+
+    /**
+     * Teleporta o jogador para o ambiente "meuQuarto" apos ele abrir um pendrive contendo um fragmento.
+     */
+    private void teleportarMeuQuarto() {
+        System.out.println("ZWOOSH!");
+        System.out.println("Voce encontrou um fragmento e foi teleportado para o seu quarto. Que loucura!");
+        System.out.println("Continue procurando os outros fragmentos.");
+
+        jogador.setAmbienteAtual(ambientes.getAmbiente("meuQuarto"));
+        imprimirInformacoesAmbiente();
     }
 
     /**
