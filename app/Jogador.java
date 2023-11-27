@@ -92,6 +92,7 @@ public class Jogador {
 //    int tempoInicial = tempoInicialDoJogo;  // Substitua isso com o tempo inicial do jogo (em minutos)
 
 //    return tempoAtual - tempoInicial;
+//  }
     }
             
 
