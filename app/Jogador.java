@@ -1,3 +1,4 @@
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -9,7 +10,9 @@ import java.util.List;
  * @version 2023.11.23
  */
 
+//Lembrar de colocar "Jogador implements RelatorioDesempenho"
 public class Jogador {
+//  private List<Pendrive> pendrivesColetados;
     private Ambiente ambienteAtual;
     private Disciplinas inventarioDisciplinas;
 
@@ -67,13 +70,28 @@ public class Jogador {
 
     public boolean disciplinasCompleta() {
         boolean status = true;
-
         for (Disciplina disciplina : inventarioDisciplinas.getDisciplinas()) {
             if(!disciplina.getTrabalho().estaCompleto()) {
                 status = false;
             }
         }
-
+        
         return status;
     }
-}
+
+// Futura implementação dos métodos de RelatorioDesempenho, para a interface gráfica 
+
+//  @Override
+//  public List<Pendrive> getPendrivesColetados() {
+//    return Collections.unmodifiableList(pendrivesColetados);
+//  }
+    
+//  @Override
+//  public int getTempoGasto() {
+//    int tempoAtual = tempoJogo.getTempoJogo();  // Supondo que você tenha uma instância de Tempo chamada tempoDoJogo
+//    int tempoInicial = tempoInicialDoJogo;  // Substitua isso com o tempo inicial do jogo (em minutos)
+
+//    return tempoAtual - tempoInicial;
+    }
+            
+

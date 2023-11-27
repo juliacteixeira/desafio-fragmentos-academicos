@@ -1,0 +1,38 @@
+/**
+* Crie uma classe que estende Application do JavaFX para criar a interface gráfica.
+*
+* @author  João Dias
+* @version 2023.11.27
+*/
+
+import javafx.application.Application;
+import javafx.scene.Scene;
+import javafx.scene.control.Label;
+import javafx.scene.layout.VBox;
+import javafx.stage.Stage;
+
+public class DesempenhoJogoGUI extends Application {
+
+    private RelatorioDesempenho relatorio;
+
+    public DesempenhoJogoGUI(RelatorioDesempenho relatorio) {
+        this.relatorio = relatorio;
+    }
+
+    @Override
+    public void start(Stage primaryStage) {
+        primaryStage.setTitle("Relatório de Desempenho");
+
+        // Criar rótulos para exibir informações
+        Label pendrivesLabel = new Label("Pendrives Coletados: " + relatorio.getPendrivesColetados().size());
+        Label tempoLabel = new Label("Tempo Gasto: " + relatorio.getTempoGasto() + " minutos");
+
+        // Layout VBox para organizar os rótulos verticalmente
+        VBox vbox = new VBox(pendrivesLabel, tempoLabel);
+
+        // Criar cena e exibir a janela
+        Scene scene = new Scene(vbox, 300, 200);
+        primaryStage.setScene(scene);
+        primaryStage.show();
+    }
+}
