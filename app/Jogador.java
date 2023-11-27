@@ -12,7 +12,7 @@ import java.util.List;
 
 //Lembrar de colocar "Jogador implements RelatorioDesempenho"
 public class Jogador {
-//  private List<Pendrive> pendrivesColetados;
+//  private List<Disciplina> trabalhosColetados;
     private Ambiente ambienteAtual;
     private Disciplinas inventarioDisciplinas;
 
@@ -82,8 +82,8 @@ public class Jogador {
 // Futura implementação dos métodos de RelatorioDesempenho, para a interface gráfica 
 
 //  @Override
-//  public List<Pendrive> getPendrivesColetados() {
-//    return Collections.unmodifiableList(pendrivesColetados);
+//  public List<Disciplina> getTrabalho() {
+//    return Collections.unmodifiableList(trabalhosColetados);
 //  }
     
 //  @Override

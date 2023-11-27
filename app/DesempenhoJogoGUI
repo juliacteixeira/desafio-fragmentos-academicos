@@ -24,11 +24,11 @@ public class DesempenhoJogoGUI extends Application {
         primaryStage.setTitle("Relatório de Desempenho");
 
         // Criar rótulos para exibir informações
-        Label pendrivesLabel = new Label("Pendrives Coletados: " + relatorio.getPendrivesColetados().size());
+        Label pendrivesLabel = new Label("Trabalhos Coletados: " + relatorio.getTrabalho().size());
         Label tempoLabel = new Label("Tempo Gasto: " + relatorio.getTempoGasto() + " minutos");
 
         // Layout VBox para organizar os rótulos verticalmente
-        VBox vbox = new VBox(pendrivesLabel, tempoLabel);
+        VBox vbox = new VBox(trabalhosLabel, tempoLabel);
 
         // Criar cena e exibir a janela
         Scene scene = new Scene(vbox, 300, 200);

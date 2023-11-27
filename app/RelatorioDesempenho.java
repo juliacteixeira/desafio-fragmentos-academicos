@@ -8,7 +8,7 @@
 import java.util.List;
 
 public interface RelatorioDesempenho {
-    List<Pendrive> getPendrivesColetados();
+    List<Disciplina> getTrabalho();
     int getTempoGasto();
 }
 
