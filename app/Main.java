@@ -1,4 +1,5 @@
-import javafx.application.Application;
+import javax.swing.SwingUtilities;
+
 /**
  * Classe principal que inicia o jogo e a interface gráfica.
  * Instancia o jogo, inicia a interface gráfica em uma thread separada e inicia o jogo.
@@ -10,16 +11,15 @@ public class Main {
     public static void main(String[] args) {
         Jogo jogo = new Jogo();
 
-        /**  
-        * Inicia a interface gráfica em uma thread separada
-        */ 
-        new Thread(() -> Application.launch(DesempenhoJogoGUI.class, args)).start();
+        SwingUtilities.invokeLater(() -> {
+            DesempenhoJogoGUI desempenhoJogoGUI = new DesempenhoJogoGUI();
+            desempenhoJogoGUI.setVisible(true);
+        });
 
-        /**
-        * Inicia o jogo
-        */ 
+        // Inicia o jogo
         jogo.jogar();
     }
 }
+
 
 

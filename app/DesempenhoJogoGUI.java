@@ -1,112 +1,129 @@
-import javafx.animation.KeyFrame;
-import javafx.animation.Timeline;
-import javafx.application.Application;
-import javafx.application.Platform;
-import javafx.scene.Scene;
-import javafx.scene.control.Label;
-import javafx.scene.layout.VBox;
-import javafx.stage.Stage;
-import javafx.util.Duration;
-
-import java.util.ArrayList;
-import java.util.List;
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 /**
  * Classe que representa a interface gráfica do desempenho do jogo.
- * Estende a classe Application do JavaFX.
+ *
+ * Esta classe estende JFrame e implementa a interface TempoObserver para observar o tempo de jogo.
  *
  * @author João Dias
  * @version 2023.11.28
  */
-public class DesempenhoJogoGUI extends Application implements TempoObserver {
+public class DesempenhoJogoGUI extends JFrame implements TempoObserver {
 
-    private int tempoRestante = 30 * 60; // Tempo restante 
-    private List<Trabalho> trabalhosColetados;
-    private Label tempoLabel;
-    private Label labelTrabalhos = new Label();
+    // Variáveis de instância
+    private int tempoRestante = 30 * 60;
+    private JLabel tempoLabel;
+    private JLabel labelTrabalhos = new JLabel();
     private int minutosRestantes;
-    private Tempo tempoJogo;
 
     /**
-     * Construtor padrão da classe. Necessário para utilizar JavaFX.
+     * Construtor padrão da classe DesempenhoJogoGUI.
+     * Inicializa os componentes da interface gráfica, define o tempo inicial e configura o timer.
      */
     public DesempenhoJogoGUI() {
-        this.trabalhosColetados = new ArrayList<>();
         this.minutosRestantes = 30;
-        this.tempoJogo = new Tempo(30 * 60);
-    }
 
-    /**
-     * Método principal que inicia a interface gráfica.
-     *
-     * @param primaryStage O palco principal.
-     */
-    @Override
-    public void start(Stage primaryStage) {
-        primaryStage.setTitle("Desempenho");
+        setTitle("Zephyrion: O Desafio dos Fragmentos Acadêmicos");
 
         labelTrabalhos.setText("Trabalhos Coletados:\n");
 
-        tempoLabel = new Label(); // Adicione esta linha para inicializar tempoLabel
-        atualizarLabelTempo(); // Adicione esta linha para exibir o tempo inicial
+        tempoLabel = new JLabel();
+        atualizarLabelTempo();
 
-        VBox vbox = new VBox(labelTrabalhos, tempoLabel);
+        JPanel panel = new JPanel();
+        panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
+        panel.add(labelTrabalhos);
+        panel.add(tempoLabel);
 
-        Scene scene = new Scene(vbox, 300, 200);
-        primaryStage.setScene(scene);
-        primaryStage.show();
-        tempoJogo.adicionarObservador(this); // Registro da instância da interface gráfica como observador do tempo
+        add(panel);
 
-        // Configurar o cronômetro para decrementar o tempo a cada segundo
-        Timeline timeline = new Timeline(
-                new KeyFrame(Duration.seconds(1), event -> {
-                    decrementarTempo();
-                    atualizarLabelTempo();
-                })
-        );
-        timeline.setCycleCount(Timeline.INDEFINITE); // Repetir indefinidamente
-        timeline.play();
+        // Configuração de cores e fontes
+        panel.setBackground(new Color(97, 77, 92)); // Cor de fundo
+        labelTrabalhos.setForeground(Color.WHITE); // Cor do texto
+        tempoLabel.setForeground(Color.WHITE); // Cor do texto
+
+        Font fonte = new Font("Arial", Font.BOLD, 14); // Fonte personalizada
+        labelTrabalhos.setFont(fonte);
+        tempoLabel.setFont(fonte);
+
+        ImageIcon icon = new ImageIcon("meuQuarto.png"); // Adiciona a capa do jogo, gerada por AI
+        JLabel labelIcone = new JLabel(icon);
+
+        panel.add(labelIcone);
+
+        // Adiciona botões
+        JButton botaoSair = new JButton("Sair");
+
+        // Adiciona os botões a um painel
+        JPanel painelBotoes = new JPanel();
+        painelBotoes.add(botaoSair);
+
+        // Adiciona o painel de botões à interface
+        add(painelBotoes, BorderLayout.SOUTH);
+
+        // Configura ações dos botões
+
+        botaoSair.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                System.exit(0);
+            }
+        });
+
+        Timer timer = new Timer(1000, new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                decrementarTempo();
+                atualizarLabelTempo();
+            }
+        });
+        timer.start();
+
+        setSize(577, 578);
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setVisible(true);
+        setLocationRelativeTo(null);
     }
 
     /**
-     * Método da interface TempoObserver chamado quando o tempo do jogo é atualizado.
-     * Atualiza dinamicamente o timer na interface gráfica com o novo tempo.
+     * Método de callback chamado quando o tempo do jogo é atualizado.
      *
-     * @param novoTempo O novo tempo do jogo.
+     * @param novoTempo O novo tempo de jogo.
      */
     @Override
     public void atualizarTempo(Tempo novoTempo) {
-    Platform.runLater(() -> {
-        int minutos = novoTempo.getTempoJogo() / 60;
-        int segundos = novoTempo.getTempoJogo() % 60;
+        SwingUtilities.invokeLater(() -> {
+            int minutos = novoTempo.getTempoJogo() / 60;
+            int segundos = novoTempo.getTempoJogo() % 60;
 
-        tempoLabel.setText(String.format("Tempo Restante: %02d minutos e %02d segundos", minutos, segundos));
-    });
-    }   
-
+            tempoLabel.setText(String.format("Tempo Restante: %02d minutos e %02d segundos", minutos, segundos));
+        });
+    }
 
     /**
-     * Método para decrementar o tempo.
+     * Método privado para decrementar o tempo de jogo.
+     * Atualiza também a interface gráfica.
      */
     private void decrementarTempo() {
         if (tempoRestante > 0) {
             tempoRestante--;
             atualizarLabelTempo();
         } else {
-            // Tempo esgotou, verificar se há minutos para decrementar
             if (minutosRestantes > 0) {
                 minutosRestantes--;
-                tempoRestante = 59; // reinicia os segundos
+                tempoRestante = 59;
                 atualizarLabelTempo();
             } else {
-                // Tempo chegou a zero, encerrar o jogo ou realizar outras ações
                 System.out.println("Tempo esgotado! Fim do jogo.");
             }
         }
     }
 
     /**
-     * Método para atualizar o texto da label de tempo.
+     * Método privado para atualizar o rótulo de tempo na interface gráfica.
      */
     private void atualizarLabelTempo() {
         int minutos = tempoRestante / 60;
@@ -116,33 +133,34 @@ public class DesempenhoJogoGUI extends Application implements TempoObserver {
     }
 
     /**
-     * Método para atualizar a label de trabalhos coletados.
+     * Método privado para atualizar o rótulo de trabalhos na interface gráfica.
+     * 
+     * Este método pode ser modificado para incluir a lógica dos trabalhos coletados em Swing.
      */
     private void atualizarLabelTrabalhos() {
-        StringBuilder trabalhosText = new StringBuilder("Trabalhos Coletados:\n");
-
-        // Verifica se trabalhosColetados não é nulo antes de iterar sobre ele
-        if (trabalhosColetados != null) {
-            for (Trabalho trabalho : trabalhosColetados) {
-                // Verifica se a disciplina do trabalho não é nula antes de acessar o nome
-                if (trabalho.getDisciplina() != null) {
-                    trabalhosText.append(trabalho.getDisciplina().getNome()).append("\n");
-                }
-            }
-        }
-
-        labelTrabalhos.setText(trabalhosText.toString());
+        // Se precisar implementar a lógica dos trabalhos coletados em Swing, faça aqui
     }
 
     /**
-     * Método principal que inicia a aplicação.
+     * Método principal que inicia a aplicação Swing.
+     * Cria uma instância da classe DesempenhoJogoGUI.
      *
-     * @param args Os argumentos da linha de comando.
+     * @param args Argumentos da linha de comando (não utilizados neste caso).
      */
     public static void main(String[] args) {
-        launch(args);
+        SwingUtilities.invokeLater(() -> {
+            new DesempenhoJogoGUI();
+        });
     }
 }
+
+
+
+
+
+
+
+
 
 
 

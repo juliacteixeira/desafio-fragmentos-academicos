@@ -71,12 +71,6 @@ public class Jogo
     private void imprimirFimDeJogo() {
         System.out.println("Parabens! Voce conseguiu entregar todos os trabalhos a tempo!");
         System.out.println("Agora Zephyrion pode descansar e aproveitar as ferias.");
-
-        // Lançar a interface gráfica
-    Platform.runLater(() -> {
-        DesempenhoJogoGUI gui = new DesempenhoJogoGUI();
-        gui.start(new Stage());
-    });
     }
 
     /**
