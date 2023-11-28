@@ -3,7 +3,7 @@
  * Ela guarda um objeto Tempo, que eh passado desde a classe Jogo, Ambientes e Pendrives.
  * Quando o pendrive eh aberto, o tempo do jogo eh alterado de acordo com o tempo do pendrive.
  *
- * @author  João Dias
+ * @author  Caio Souza and João Dias
  * @version 2023.11.23
  */
 /**
@@ -30,9 +30,20 @@ public class PendriveTempo extends Pendrive {
      */
     public void abrir() {
         super.setAberto(true);
-        tempoJogo.setTempoJogo(tempoJogo.getTempoJogo() + tempo);
-
+        aplicarAlteracaoTempo(); 
         exibirMensagemPendrive();
+    }
+
+    /**
+     * Aplica a alteração de tempo.
+     * Aumenta ou decrementa o tempo, conforme o pendrive de tempo que foi aberto.
+     */
+    private void aplicarAlteracaoTempo() {
+        if (tempo > 0) {
+            tempoJogo.aumentarTempo(this);
+        } else if (tempo < 0) {
+            tempoJogo.decrementarTempo(this);
+        }
     }
 
     /**

@@ -7,10 +7,10 @@ import java.util.List;
  * Ela é composta por um ambiente atual e por uma lista de disciplinas.
  * Essa lista de disciplinas é como o inventário do jogador.
  *
- * @author Caio Souza
+ * @author Caio Souza and João Dias
  * @version 2023.11.23
  */
-public class Jogador implements RelatorioDesempenho, PendriveListener {
+public class Jogador implements RelatorioDesempenho {
     private Ambiente ambienteAtual;
     private Disciplinas inventarioDisciplinas;
     private long tempoInicial;
@@ -118,25 +118,6 @@ public class Jogador implements RelatorioDesempenho, PendriveListener {
         return tempoGastoMinutos;
     }
 
-    /**
-     * Método chamado quando um pendrive é aberto.
-     *
-     * @param pendrive O pendrive que foi aberto.
-     */
-    @Override
-    public void onPendriveAberto(Pendrive pendrive) {
-        if (pendrive instanceof PendriveTempo) {
-            int tempo = ((PendriveTempo) pendrive).getTempo();
-            // Adicione o tempo ao temporizador ou faça outras ações necessárias
-        }
-    }
-
-    /**
-     * Método para cancelar o temporizador quando o jogo termina ou quando o tempo limite é atingido.
-     */
-    public void pararTemporizador() {
-        // Implemente a lógica para parar o temporizador conforme necessário
-    }
 }
 
 

@@ -3,7 +3,7 @@
  * Ela recebe uma disciplina e, ao ser aberto, adiciona um fragmento de trabalho a disciplina.
  * Antes da adição do fragmento, é verificado se o trabalho já está completo. Caso esteja, o fragmento não é adicionado.
  *
- * @author  João Dias
+ * @author  Caio Souza and João Dias
  * @version 2023.11.23
  */
 public class PendriveDisciplina extends Pendrive {

@@ -7,7 +7,7 @@ import java.util.Set;
  * Ela eh composta por uma descricao e por saidas para outros ambientes.
  * Ela tambem eh composta por uma lista de pendrives, pois os pendrives existem somente dentro de um ambiente.
  *
- * @author  João Dias
+ * @author  Caio Souza 
  * @version 2023.11.23
  */
 
