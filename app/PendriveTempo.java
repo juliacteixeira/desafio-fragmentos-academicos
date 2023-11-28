@@ -6,13 +6,18 @@
  * @author  João Dias
  * @version 2023.11.23
  */
+/**
+ * Classe que representa um pendrive de tempo.
+ */
 public class PendriveTempo extends Pendrive {
     private int tempo;
     private Tempo tempoJogo;
 
     /**
-     * @param tempo O tempo que o pendrive ira adicionar ou remover do tempo do jogo.
-     * @param tempoJogo O objeto Tempo que eh usado no Jogo.
+     * Construtor que inicializa o PendriveTempo.
+     *
+     * @param tempo     O tempo que o pendrive irá adicionar ou remover do tempo do jogo.
+     * @param tempoJogo O objeto Tempo que é usado no Jogo.
      */
     public PendriveTempo(int tempo, Tempo tempoJogo) {
         this.tempo = tempo;
@@ -34,6 +39,17 @@ public class PendriveTempo extends Pendrive {
      * Exibe uma mensagem informando que o pendrive foi aberto e que o tempo do jogo foi alterado.
      */
     private void exibirMensagemPendrive() {
-        System.out.printf("Voce encontrou um pendrive de tempo! Ele possui uma %s de %d minutos.\n", tempo > 0 ? "recompensa" : "penalidade", tempo);
+        System.out.printf("Você encontrou um pendrive de tempo! Ele possui uma %s de %d minutos.\n",
+                tempo > 0 ? "recompensa" : "penalidade", tempo);
+    }
+
+    /**
+     * Obtém o tempo associado ao pendrive.
+     *
+     * @return O tempo associado ao pendrive.
+     */
+    public int getTempo() {
+        return tempo;
     }
 }
+

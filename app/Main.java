@@ -1,9 +1,21 @@
+import javafx.application.Application;
+/**
+ * Classe principal que inicia o jogo e a interface gráfica.
+ * Instancia o jogo, inicia a interface gráfica em uma thread separada e inicia o jogo.
+ *
+ * @author João Dias
+ * @version 2023.11.27
+ */
 public class Main {
     public static void main(String[] args) {
         Jogo jogo = new Jogo();
-        ///DesempenhoJogoGUI gui = new DesempenhoJogoGUI(jogador);
-        ///gui.launch(args);
 
+        // Inicia a interface gráfica em uma thread separada
+        new Thread(() -> Application.launch(DesempenhoJogoGUI.class, args)).start();
+
+        // Inicia o jogo
         jogo.jogar();
     }
 }
+
+

@@ -2,6 +2,9 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+import javafx.application.Platform;
+import javafx.stage.Stage;
+
 /**
  * Essa eh a classe principal do jogo Desafio Fragmentos Academicos.
  *
@@ -68,6 +71,12 @@ public class Jogo
     private void imprimirFimDeJogo() {
         System.out.println("Parabens! Voce conseguiu entregar todos os trabalhos a tempo!");
         System.out.println("Agora Zephyrion pode descansar e aproveitar as ferias.");
+
+        // Lançar a interface gráfica
+    Platform.runLater(() -> {
+        DesempenhoJogoGUI gui = new DesempenhoJogoGUI();
+        gui.start(new Stage());
+    });
     }
 
     /**

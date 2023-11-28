@@ -8,8 +8,8 @@
 import java.util.List;
 
 public interface RelatorioDesempenho {
-    List<Disciplina> getTrabalho();
     int getTempoGasto();
+    List<Disciplina> getTrabalhosColetados();
 }
 
 
