@@ -90,7 +90,7 @@ public class DesempenhoJogoGUI extends JFrame implements InventarioDisciplinasGU
         botaoAjuda.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                infoTextArea.append("TESTE");
+                System.exit(0);
             }
         });
 
