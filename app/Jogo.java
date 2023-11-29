@@ -2,8 +2,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-import javafx.application.Platform;
-import javafx.stage.Stage;
 
 /**
  * Essa eh a classe principal do jogo Desafio Fragmentos Academicos.
