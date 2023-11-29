@@ -21,7 +21,7 @@ public class Jogo
     private Jogador jogador;
 
     private Tempo tempo;
-    private final int TEMPO_MAXIMO = 60; // Em segundos
+    private final int TEMPO_MAXIMO = 180; // Em segundos
 
     /**
      * Instancia o analisador de comandos do jogo.
@@ -46,6 +46,10 @@ public class Jogo
 
     public Tempo getTempo() {
         return tempo;
+    }
+
+    public Jogador getJogador() {
+        return jogador;
     }
 
     /**
@@ -219,7 +223,10 @@ public class Jogo
             else pendrive.abrir(); // Polimorfismo é chamado baseado no tipo do pendrive
 
             // Verifica se o pendrive é um pendrive de disciplina
-            if(pendrive instanceof PendriveDisciplina) teleportarMeuQuarto();
+            if(pendrive instanceof PendriveDisciplina) {
+                teleportarMeuQuarto();
+                jogador.mudouInventario();
+            }
         }
         else {
             System.out.println("Nao ha um pendrive com esse numero!");

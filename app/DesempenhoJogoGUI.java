@@ -11,24 +11,27 @@ import java.awt.event.ActionListener;
  * @author João Dias
  * @version 2023.11.28
  */
-public class DesempenhoJogoGUI extends JFrame {
+public class DesempenhoJogoGUI extends JFrame implements InventarioDisciplinasGUI{
 
     // Variáveis de instância
     private Tempo tempoJogo;
     private JLabel tempoLabel;
     private JLabel labelTrabalhos = new JLabel();
     private Timer timer;
+    private Jogador jogador;
 
     /**
      * Construtor padrão da classe DesempenhoJogoGUI.
      * Inicializa os componentes da interface gráfica, define o tempo inicial e configura o timer.
      */
-    public DesempenhoJogoGUI(Tempo tempoJogo) {
+    public DesempenhoJogoGUI(Tempo tempoJogo, Jogador jogador) {
         this.tempoJogo = tempoJogo;
+        this.jogador = jogador;
+        this.jogador.adicionarObservador(this);
 
         setTitle("Zephyrion: O Desafio dos Fragmentos Acadêmicos");
 
-        labelTrabalhos.setText("Trabalhos Coletados:\n");
+        labelTrabalhos.setText(jogador.statusDisciplinas());
 
         tempoLabel = new JLabel();
         atualizarLabelTempo();
@@ -120,7 +123,12 @@ public class DesempenhoJogoGUI extends JFrame {
      * Este método pode ser modificado para incluir a lógica dos trabalhos coletados em Swing.
      */
     private void atualizarLabelTrabalhos() {
-        // Se precisar implementar a lógica dos trabalhos coletados em Swing, faça aqui
+        labelTrabalhos.setText(jogador.statusDisciplinas());
+    }
+
+    @Override
+    public void atualizarInventarioGUI() {
+        atualizarLabelTrabalhos();
     }
 }
 
