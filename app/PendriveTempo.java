@@ -30,37 +30,16 @@ public class PendriveTempo extends Pendrive {
      */
     public void abrir() {
         super.setAberto(true);
-        aplicarAlteracaoTempo(); 
+        tempoJogo.alterarTempo(tempo);
         exibirMensagemPendrive();
-    }
-
-    /**
-     * Aplica a alteração de tempo.
-     * Aumenta ou decrementa o tempo, conforme o pendrive de tempo que foi aberto.
-     */
-    private void aplicarAlteracaoTempo() {
-        if (tempo > 0) {
-            tempoJogo.aumentarTempo(this);
-        } else if (tempo < 0) {
-            tempoJogo.decrementarTempo(this);
-        }
     }
 
     /**
      * Exibe uma mensagem informando que o pendrive foi aberto e que o tempo do jogo foi alterado.
      */
     private void exibirMensagemPendrive() {
-        System.out.printf("Você encontrou um pendrive de tempo! Ele possui uma %s de %d minutos.\n",
+        System.out.printf("Você encontrou um pendrive de tempo! Ele possui uma %s de %d segundos.\n",
                 tempo > 0 ? "recompensa" : "penalidade", tempo);
-    }
-
-    /**
-     * Obtém o tempo associado ao pendrive.
-     *
-     * @return O tempo associado ao pendrive.
-     */
-    public int getTempo() {
-        return tempo;
     }
 }
 

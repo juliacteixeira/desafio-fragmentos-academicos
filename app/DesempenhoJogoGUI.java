@@ -11,24 +11,27 @@ import java.awt.event.ActionListener;
  * @author João Dias
  * @version 2023.11.28
  */
-public class DesempenhoJogoGUI extends JFrame implements TempoObserver {
+public class DesempenhoJogoGUI extends JFrame implements InventarioDisciplinasGUI{
 
     // Variáveis de instância
-    private int tempoRestante = 30 * 60;
+    private Tempo tempoJogo;
     private JLabel tempoLabel;
     private JLabel labelTrabalhos = new JLabel();
-    private int minutosRestantes;
+    private Timer timer;
+    private Jogador jogador;
 
     /**
      * Construtor padrão da classe DesempenhoJogoGUI.
      * Inicializa os componentes da interface gráfica, define o tempo inicial e configura o timer.
      */
-    public DesempenhoJogoGUI() {
-        this.minutosRestantes = 30;
+    public DesempenhoJogoGUI(Tempo tempoJogo, Jogador jogador) {
+        this.tempoJogo = tempoJogo;
+        this.jogador = jogador;
+        this.jogador.adicionarObservador(this);
 
         setTitle("Zephyrion: O Desafio dos Fragmentos Acadêmicos");
 
-        labelTrabalhos.setText("Trabalhos Coletados:\n");
+        labelTrabalhos.setText(jogador.statusDisciplinas());
 
         tempoLabel = new JLabel();
         atualizarLabelTempo();
@@ -73,10 +76,10 @@ public class DesempenhoJogoGUI extends JFrame implements TempoObserver {
             }
         });
 
-        Timer timer = new Timer(1000, new ActionListener() {
+        timer = new Timer(1000, new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                decrementarTempo();
+                alterarTempo();
                 atualizarLabelTempo();
             }
         });
@@ -89,36 +92,18 @@ public class DesempenhoJogoGUI extends JFrame implements TempoObserver {
     }
 
     /**
-     * Método de callback chamado quando o tempo do jogo é atualizado.
-     *
-     * @param novoTempo O novo tempo de jogo.
-     */
-    @Override
-    public void atualizarTempo(Tempo novoTempo) {
-        SwingUtilities.invokeLater(() -> {
-            int minutos = novoTempo.getTempoJogo() / 60;
-            int segundos = novoTempo.getTempoJogo() % 60;
-
-            tempoLabel.setText(String.format("Tempo Restante: %02d minutos e %02d segundos", minutos, segundos));
-        });
-    }
-
-    /**
      * Método privado para decrementar o tempo de jogo.
      * Atualiza também a interface gráfica.
      */
-    private void decrementarTempo() {
+    private void alterarTempo() {
+        int tempoRestante = tempoJogo.getTempoJogo();
+
         if (tempoRestante > 0) {
-            tempoRestante--;
+            tempoJogo.setTempoJogo(tempoRestante - 1);
             atualizarLabelTempo();
-        } else {
-            if (minutosRestantes > 0) {
-                minutosRestantes--;
-                tempoRestante = 59;
-                atualizarLabelTempo();
-            } else {
-                System.out.println("Tempo esgotado! Fim do jogo.");
-            }
+        } else { // Aqui, o jogo termina.
+            timer.stop();
+            System.out.println("Tempo esgotado! Fim do jogo.");
         }
     }
 
@@ -126,8 +111,8 @@ public class DesempenhoJogoGUI extends JFrame implements TempoObserver {
      * Método privado para atualizar o rótulo de tempo na interface gráfica.
      */
     private void atualizarLabelTempo() {
-        int minutos = tempoRestante / 60;
-        int segundos = tempoRestante % 60;
+        int minutos = tempoJogo.getTempoJogo() / 60;
+        int segundos = tempoJogo.getTempoJogo() % 60;
 
         tempoLabel.setText(String.format("Tempo Restante: %02d minutos e %02d segundos", minutos, segundos));
     }
@@ -138,19 +123,12 @@ public class DesempenhoJogoGUI extends JFrame implements TempoObserver {
      * Este método pode ser modificado para incluir a lógica dos trabalhos coletados em Swing.
      */
     private void atualizarLabelTrabalhos() {
-        // Se precisar implementar a lógica dos trabalhos coletados em Swing, faça aqui
+        labelTrabalhos.setText(jogador.statusDisciplinas());
     }
 
-    /**
-     * Método principal que inicia a aplicação Swing.
-     * Cria uma instância da classe DesempenhoJogoGUI.
-     *
-     * @param args Argumentos da linha de comando (não utilizados neste caso).
-     */
-    public static void main(String[] args) {
-        SwingUtilities.invokeLater(() -> {
-            new DesempenhoJogoGUI();
-        });
+    @Override
+    public void atualizarInventarioGUI() {
+        atualizarLabelTrabalhos();
     }
 }
 
