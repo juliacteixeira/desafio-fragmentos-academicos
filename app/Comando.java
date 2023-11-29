@@ -70,4 +70,3 @@ public class Comando
         return (segundaPalavra != null);
     }
 }
-
