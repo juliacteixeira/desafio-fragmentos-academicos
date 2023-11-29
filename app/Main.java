@@ -12,7 +12,7 @@ public class Main {
         Jogo jogo = new Jogo();
 
         SwingUtilities.invokeLater(() -> {
-            DesempenhoJogoGUI desempenhoJogoGUI = new DesempenhoJogoGUI();
+            DesempenhoJogoGUI desempenhoJogoGUI = new DesempenhoJogoGUI(jogo.getTempo()); // Inicia a interface e passa as informacoes do jogo
             desempenhoJogoGUI.setVisible(true);
         });
 

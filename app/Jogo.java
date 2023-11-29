@@ -2,9 +2,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-import javafx.application.Platform;
-import javafx.stage.Stage;
-
 /**
  * Essa eh a classe principal do jogo Desafio Fragmentos Academicos.
  *
@@ -24,7 +21,7 @@ public class Jogo
     private Jogador jogador;
 
     private Tempo tempo;
-    private final int TEMPO_MAXIMO = 10000;
+    private final int TEMPO_MAXIMO = 60; // Em segundos
 
     /**
      * Instancia o analisador de comandos do jogo.
@@ -45,6 +42,10 @@ public class Jogo
 
         Ambiente ambienteInicial = ambientes.getAmbiente("meuQuarto");
         jogador.setAmbienteAtual(ambienteInicial);
+    }
+
+    public Tempo getTempo() {
+        return tempo;
     }
 
     /**
@@ -193,7 +194,6 @@ public class Jogo
      */
     private void statusInventarioDisciplinas() {
         jogador.statusDisciplinas();
-
     }
 
     /**
