@@ -9,24 +9,14 @@
  */
 public class Trabalho {
     private int fragmentos;
-    private Disciplina disciplina;
     private final int FRAGMENTOS_MAX = 2;
 
     /**
      * Crie e inicializa a quantidade de fragmentos com 0.
      */
-    public Trabalho(Disciplina disciplina) {
-        this.disciplina = disciplina;
+    public Trabalho() {
         this.fragmentos = 0;
     }
-    /**
-     * @return disciplina.
-     */
-    public Disciplina getDisciplina(){
-        return disciplina;
-    }
-
-
     /**
      * @return fragmentos quantidade de fragmentos que o trabalho tem.
      */

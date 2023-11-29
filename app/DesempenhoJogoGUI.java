@@ -1,33 +1,37 @@
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
 /**
  * Classe que representa a interface gráfica do desempenho do jogo.
+ *
  * Esta classe estende JFrame e implementa a interface TempoObserver para observar o tempo de jogo.
  *
  * @author João Dias
  * @version 2023.11.28
  */
+public class DesempenhoJogoGUI extends JFrame implements InventarioDisciplinasGUI{
 
-import javax.swing.*;
-import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.KeyEvent;
-import java.awt.event.KeyAdapter;
-
-public class DesempenhoJogoGUI extends JFrame implements TempoObserver {
-
-    private int tempoRestante = 30 * 60;
+    // Variáveis de instância
+    private Tempo tempoJogo;
     private JLabel tempoLabel;
     private JLabel labelTrabalhos = new JLabel();
-    private int minutosRestantes;
-    private JTextField comandoTextField;
-    private JTextArea infoTextArea;
+    private Timer timer;
+    private Jogador jogador;
 
-    public DesempenhoJogoGUI() {
-        this.minutosRestantes = 30;
+    /**
+     * Construtor padrão da classe DesempenhoJogoGUI.
+     * Inicializa os componentes da interface gráfica, define o tempo inicial e configura o timer.
+     */
+    public DesempenhoJogoGUI(Tempo tempoJogo, Jogador jogador) {
+        this.tempoJogo = tempoJogo;
+        this.jogador = jogador;
+        this.jogador.adicionarObservador(this);
 
         setTitle("Zephyrion: O Desafio dos Fragmentos Acadêmicos");
 
-        labelTrabalhos.setText("Trabalhos Coletados:\n");
+        labelTrabalhos.setText(jogador.statusDisciplinas());
 
         tempoLabel = new JLabel();
         atualizarLabelTempo();
@@ -37,36 +41,34 @@ public class DesempenhoJogoGUI extends JFrame implements TempoObserver {
         panel.add(labelTrabalhos);
         panel.add(tempoLabel);
 
-        ImageIcon icon = new ImageIcon("capa-zephyrion.png");
+        add(panel);
+
+        // Configuração de cores e fontes
+        panel.setBackground(new Color(97, 77, 92)); // Cor de fundo
+        labelTrabalhos.setForeground(Color.WHITE); // Cor do texto
+        tempoLabel.setForeground(Color.WHITE); // Cor do texto
+
+        Font fonte = new Font("Arial", Font.BOLD, 14); // Fonte personalizada
+        labelTrabalhos.setFont(fonte);
+        tempoLabel.setFont(fonte);
+
+        ImageIcon icon = new ImageIcon("meuQuarto.png"); // Adiciona a capa do jogo, gerada por AI
         JLabel labelIcone = new JLabel(icon);
+
         panel.add(labelIcone);
 
-        // Adiciona um container usando BorderLayout
-        Container container = getContentPane();
-        container.setLayout(new BorderLayout());
-
-        // Adiciona um JTextArea para imprimir informações à direita
-        infoTextArea = new JTextArea();
-        infoTextArea.setEditable(false);
-        infoTextArea.setBackground(Color.BLACK);
-        infoTextArea.setForeground(Color.WHITE);
-        JScrollPane scrollPane = new JScrollPane(infoTextArea);
-        scrollPane.setPreferredSize(new Dimension(400, 300)); // Ajuste conforme necessário
-        container.add(scrollPane, BorderLayout.EAST);
-
-        // Adiciona campo de texto e botão "Enviar" no painel sul
-        JPanel painelSul = new JPanel(new FlowLayout(FlowLayout.CENTER)); // Usando FlowLayout para centralizar os componentes
-        comandoTextField = new JTextField(20);
-        painelSul.add(comandoTextField);
-
-        JButton botaoEnviar = new JButton("Enviar");
-        painelSul.add(botaoEnviar);
-
-        // Adiciona botões no painel sul
+        // Adiciona botões
         JButton botaoSair = new JButton("Sair");
-        painelSul.add(botaoSair);
+
+        // Adiciona os botões a um painel
+        JPanel painelBotoes = new JPanel();
+        painelBotoes.add(botaoSair);
+
+        // Adiciona o painel de botões à interface
+        add(painelBotoes, BorderLayout.SOUTH);
 
         // Configura ações dos botões
+
         botaoSair.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -74,83 +76,61 @@ public class DesempenhoJogoGUI extends JFrame implements TempoObserver {
             }
         });
 
-        // Organiza os componentes da interface gráfica
-        container.add(painelSul, BorderLayout.SOUTH);
-        container.add(panel, BorderLayout.CENTER);
-
-        comandoTextField.addKeyListener(new KeyAdapter() {
-            @Override
-            public void keyPressed(KeyEvent e) {
-                if (e.getKeyCode() == KeyEvent.VK_ENTER) {
-                    String comando = comandoTextField.getText();
-                    processarComando(comando);
-                    comandoTextField.setText("");
-                }
-            }
-        });
-
-        Timer timer = new Timer(1000, new ActionListener() {
+        timer = new Timer(1000, new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                decrementarTempo();
+                alterarTempo();
                 atualizarLabelTempo();
             }
         });
         timer.start();
 
-        setSize(1700, 900);
+        setSize(577, 578);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setVisible(true);
         setLocationRelativeTo(null);
     }
 
-    private void processarComando(String comando) {
-        System.out.println("Comando inserido: " + comando);
-    }
+    /**
+     * Método privado para decrementar o tempo de jogo.
+     * Atualiza também a interface gráfica.
+     */
+    private void alterarTempo() {
+        int tempoRestante = tempoJogo.getTempoJogo();
 
-    @Override
-    public void atualizarTempo(Tempo novoTempo) {
-        SwingUtilities.invokeLater(() -> {
-            int minutos = novoTempo.getTempoJogo() / 60;
-            int segundos = novoTempo.getTempoJogo() % 60;
-
-            tempoLabel.setText(String.format("Tempo Restante: %02d minutos e %02d segundos", minutos, segundos));
-        });
-    }
-
-    private void decrementarTempo() {
         if (tempoRestante > 0) {
-            tempoRestante--;
+            tempoJogo.setTempoJogo(tempoRestante - 1);
             atualizarLabelTempo();
-        } else {
-            if (minutosRestantes > 0) {
-                minutosRestantes--;
-                tempoRestante = 59;
-                atualizarLabelTempo();
-            } else {
-                System.out.println("Tempo esgotado! Fim do jogo.");
-            }
+        } else { // Aqui, o jogo termina.
+            timer.stop();
+            System.out.println("Tempo esgotado! Fim do jogo.");
         }
     }
 
+    /**
+     * Método privado para atualizar o rótulo de tempo na interface gráfica.
+     */
     private void atualizarLabelTempo() {
-        int minutos = tempoRestante / 60;
-        int segundos = tempoRestante % 60;
+        int minutos = tempoJogo.getTempoJogo() / 60;
+        int segundos = tempoJogo.getTempoJogo() % 60;
 
         tempoLabel.setText(String.format("Tempo Restante: %02d minutos e %02d segundos", minutos, segundos));
     }
 
+    /**
+     * Método privado para atualizar o rótulo de trabalhos na interface gráfica.
+     * 
+     * Este método pode ser modificado para incluir a lógica dos trabalhos coletados em Swing.
+     */
     private void atualizarLabelTrabalhos() {
-        // Lógica dos trabalhos coletados
+        labelTrabalhos.setText(jogador.statusDisciplinas());
     }
 
-    public static void main(String[] args) {
-        SwingUtilities.invokeLater(() -> {
-            new DesempenhoJogoGUI();
-        });
+    @Override
+    public void atualizarInventarioGUI() {
+        atualizarLabelTrabalhos();
     }
 }
-
 
 
 
