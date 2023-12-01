@@ -124,6 +124,14 @@ public class DesempenhoJogoGUI extends JFrame implements InventarioDisciplinasGU
         botaoEnviar.setForeground(Color.WHITE);
         painelSul.add(botaoEnviar, BorderLayout.EAST);
 
+        // Estilo do botão Ajuda
+        botaoAjuda.setBorderPainted(false);
+        botaoAjuda.setFocusPainted(false);
+
+        // Estilo do botão Enviar
+        botaoEnviar.setBorderPainted(false);
+        botaoEnviar.setFocusPainted(false);
+
         // Organiza os componentes da interface gráfica
         container.add(painelSul, BorderLayout.SOUTH);
 
