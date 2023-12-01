@@ -2,18 +2,16 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.KeyEvent;
-import java.awt.event.KeyAdapter;
 
 /**
- * Classe que representa a interface gráfica do desempenho do jogo.
+ * Classe que representa a interface gráfica do desempenho do jogo com um visual de game adventure em texto.
  *
- * Esta classe estende JFrame e implementa a interface TempoObserver para observar o tempo de jogo.
+ * Esta classe estende JFrame e implementa a interface InventarioDisciplinasGUI.
  *
  * @author João Dias
- * @version 2023.11.28
+ * @version 2023.12.01
  */
-public class DesempenhoJogoGUI extends JFrame implements InventarioDisciplinasGUI{
+public class DesempenhoJogoGUI extends JFrame implements InventarioDisciplinasGUI {
 
     // Variáveis de instância
     private Tempo tempoJogo;
@@ -27,6 +25,9 @@ public class DesempenhoJogoGUI extends JFrame implements InventarioDisciplinasGU
     /**
      * Construtor padrão da classe DesempenhoJogoGUI.
      * Inicializa os componentes da interface gráfica, define o tempo inicial e configura o timer.
+     *
+     * @param tempoJogo Objeto Tempo representando o tempo do jogo.
+     * @param jogador   Objeto Jogador representando o jogador.
      */
     public DesempenhoJogoGUI(Tempo tempoJogo, Jogador jogador) {
         this.tempoJogo = tempoJogo;
@@ -40,51 +41,91 @@ public class DesempenhoJogoGUI extends JFrame implements InventarioDisciplinasGU
         tempoLabel = new JLabel();
         atualizarLabelTempo();
 
-        JPanel panel = new JPanel();
-        panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
-        panel.add(labelTrabalhos);
-        panel.add(tempoLabel);
-
-        // Configuração de cores e fontes
-        panel.setBackground(Color.WHITE); // Cor de fundo
-        labelTrabalhos.setForeground(Color.BLACK); // Cor do texto
-        tempoLabel.setForeground(Color.BLACK); // Cor do texto
-        
-        // Adiciona um container usando BorderLayout
         Container container = getContentPane();
         container.setLayout(new BorderLayout());
 
-        Font fonte = new Font("Arial", Font.BOLD, 14); // Fonte personalizada
+        Font fonte = new Font("Courier New", Font.PLAIN, 14);
         labelTrabalhos.setFont(fonte);
-        tempoLabel.setFont(fonte);
+        tempoLabel.setFont(fonte.deriveFont(Font.BOLD, 18)); // Estilo negrito e tamanho maior
 
-        // Adiciona um JTextArea para imprimir informações à direita
+        // Adiciona um JTextArea estilizado para imprimir informações à direita
         infoTextArea = new JTextArea();
         infoTextArea.setEditable(false);
         infoTextArea.setBackground(Color.BLACK);
         infoTextArea.setForeground(Color.WHITE);
-        JScrollPane scrollPane = new JScrollPane(infoTextArea);
-        scrollPane.setPreferredSize(new Dimension(400, 300)); // Ajuste conforme necessário
-        container.add(scrollPane, BorderLayout.EAST);
 
-        ImageIcon icon = new ImageIcon("capa-zephyrion.png"); // Adiciona a capa do jogo, gerada por AI
-        JLabel labelIcone = new JLabel(icon);
-        panel.add(labelIcone);
+        // Define a política de quebra de palavras para ajustar à largura
+        infoTextArea.setLineWrap(true);
+        infoTextArea.setWrapStyleWord(true);
+
+        // Ajusta a margem do JTextArea
+        infoTextArea.setMargin(new Insets(10, 10, 10, 10));
+
+        // Define uma fonte e tamanho maior para um estilo mais proeminente
+        Font textoFonte = new Font("Courier New", Font.PLAIN, 16);
+        infoTextArea.setFont(textoFonte);
+
+        // Define o alinhamento do texto para justificado
+        infoTextArea.setAlignmentX(Component.LEFT_ALIGNMENT);
+
+        // Cria um JScrollPane e define a altura mínima preferida maior
+        JScrollPane scrollPane = new JScrollPane(infoTextArea);
+        scrollPane.setPreferredSize(new Dimension(getWidth() / 2, getHeight()));
+
+         // Cria um JLabel para o minimapa
+        JLabel minimapaLabel = new JLabel();
+         minimapaLabel.setIcon(new ImageIcon("mapa.png")); // Substitua pelo caminho da sua imagem
+
+         // Defina o JLabel para ser opaco para permitir o background da imagem
+        minimapaLabel.setOpaque(true);
+         minimapaLabel.setBackground(null); // Define o fundo como nulo para que a imagem seja o background
+
+         // Adiciona rótulos de tempo e trabalhos ao painel norte
+         JPanel painelNorte = new JPanel(new GridLayout(2, 1)); // GridLayout para organizar em duas linhas
+        painelNorte.setBackground(Color.WHITE);
+
+        // Subpainel para os rótulos de trabalhos
+        JPanel subPainelTrabalhos = new JPanel(new FlowLayout(FlowLayout.CENTER));
+        subPainelTrabalhos.setBackground(Color.WHITE);
+        subPainelTrabalhos.add(labelTrabalhos);
+        painelNorte.add(subPainelTrabalhos);
+
+        // Subpainel para o rótulo de tempo
+        JPanel subPainelTempo = new JPanel(new FlowLayout(FlowLayout.CENTER));
+        subPainelTempo.setBackground(Color.WHITE);
+        subPainelTempo.add(tempoLabel);
+        painelNorte.add(subPainelTempo);
+
+        container.add(painelNorte, BorderLayout.NORTH);
+
+        // Substitui o JPanel do mapa pelo JLabel do minimapa
+        JSplitPane splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, scrollPane, minimapaLabel);
+        splitPane.setResizeWeight(1);  // Define a proporção da divisão
+
+        // Adiciona o JSplitPane ao container usando BorderLayout
+        container.add(splitPane, BorderLayout.CENTER);
 
         // Adiciona campo de texto e botão "Enviar" no painel sul
-        JPanel painelSul = new JPanel(new FlowLayout(FlowLayout.CENTER)); // Usando FlowLayout para centralizar os componentes
+        JPanel painelSul = new JPanel(new BorderLayout());
         comandoTextField = new JTextField(20);
-        painelSul.add(comandoTextField);
+
+        // Adiciona campo de texto ao centro do painelSul
+        painelSul.add(comandoTextField, BorderLayout.CENTER);
+
+        // Adiciona botão "Ajuda" estilizado ao painelSul
+        JButton botaoAjuda = new JButton("Ajuda");
+        botaoAjuda.setBackground(Color.BLACK);
+        botaoAjuda.setForeground(Color.WHITE);
+        painelSul.add(botaoAjuda, BorderLayout.WEST);
+
+        // Adiciona botão "Enviar" estilizado ao painelSul
+        JButton botaoEnviar = new JButton("Enviar");
+        botaoEnviar.setBackground(Color.BLACK);
+        botaoEnviar.setForeground(Color.WHITE);
+        painelSul.add(botaoEnviar, BorderLayout.EAST);
 
         // Organiza os componentes da interface gráfica
         container.add(painelSul, BorderLayout.SOUTH);
-        container.add(panel, BorderLayout.CENTER);
-
-        // Adiciona botões
-        JButton botaoEnviar = new JButton("Enviar");
-        painelSul.add(botaoEnviar);
-        JButton botaoAjuda = new JButton("Ajuda");
-        painelSul.add(botaoAjuda);
 
         // Configura ações dos botões
         botaoAjuda.addActionListener(new ActionListener() {
@@ -94,14 +135,21 @@ public class DesempenhoJogoGUI extends JFrame implements InventarioDisciplinasGU
             }
         });
 
-        comandoTextField.addKeyListener(new KeyAdapter() {
+        // Adiciona ação para o botão "Enviar"
+        botaoEnviar.addActionListener(new ActionListener() {
             @Override
-            public void keyPressed(KeyEvent e) {
-                if (e.getKeyCode() == KeyEvent.VK_ENTER) {
-                    String comando = comandoTextField.getText();
-                    processarComando(comando);
-                    comandoTextField.setText("");
-                }
+            public void actionPerformed(ActionEvent e) {
+                processarComando(comandoTextField.getText());
+                comandoTextField.setText("");
+            }
+        });
+
+        // Adiciona ação para o campo de texto (pressionar Enter)
+        comandoTextField.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                processarComando(comandoTextField.getText());
+                comandoTextField.setText("");
             }
         });
 
@@ -135,12 +183,21 @@ public class DesempenhoJogoGUI extends JFrame implements InventarioDisciplinasGU
             System.out.println("Tempo esgotado! Fim do jogo.");
         }
     }
+
     /**
      * Método privado para processar os comandos do jogo.
+     *
      * @param comando Comando utilizado pelo jogador no chat.
      */
     private void processarComando(String comando) {
-        System.out.println("Comando inserido: " + comando);
+        // Adiciona o comando ao JTextArea
+        infoTextArea.append(comando + "\n");
+
+        // Se desejar rolar automaticamente para o final do JTextArea:
+        infoTextArea.setCaretPosition(infoTextArea.getDocument().getLength());
+
+        // Limpa o JTextField
+        comandoTextField.setText("");
     }
 
     /**
@@ -155,8 +212,6 @@ public class DesempenhoJogoGUI extends JFrame implements InventarioDisciplinasGU
 
     /**
      * Método privado para atualizar o rótulo de trabalhos na interface gráfica.
-     * 
-     * Este método pode ser modificado para incluir a lógica dos trabalhos coletados em Swing.
      */
     private void atualizarLabelTrabalhos() {
         labelTrabalhos.setText(jogador.statusDisciplinas());
@@ -167,21 +222,3 @@ public class DesempenhoJogoGUI extends JFrame implements InventarioDisciplinasGU
         atualizarLabelTrabalhos();
     }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
