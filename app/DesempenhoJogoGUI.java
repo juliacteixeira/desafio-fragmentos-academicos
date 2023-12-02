@@ -1,10 +1,29 @@
-import javax.swing.*;
-import java.awt.*;
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Component;
+import java.awt.Container;
+import java.awt.Dimension;
+import java.awt.FlowLayout;
+import java.awt.Font;
+import java.awt.GridLayout;
+import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+import javax.swing.ImageIcon;
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JSplitPane;
+import javax.swing.JTextArea;
+import javax.swing.JTextField;
+import javax.swing.Timer;
+
 /**
- * Classe que representa a interface gráfica do desempenho do jogo com um visual de game adventure em texto.
+ * Classe que representa a interface gráfica do desempenho do jogo com um visual
+ * de game adventure em texto.
  *
  * Esta classe estende JFrame e implementa a interface InventarioDisciplinasGUI.
  *
@@ -21,8 +40,6 @@ public class DesempenhoJogoGUI extends JFrame {
     private Timer timer;
     private Jogo jogo;
     private Tempo tempoJogo;
-    private JButton botaoAjuda;
-    private JButton botaoEnviar;
 
     public DesempenhoJogoGUI(Jogo jogo) {
         // Para chamar os metodos de jogo, temos que ter uma referencia a ele
@@ -36,8 +53,8 @@ public class DesempenhoJogoGUI extends JFrame {
 
         criarLabels();
 
-        botaoAjuda = new JButton("Ajuda");
-        botaoEnviar = new JButton("Enviar");
+        JButton botaoAjuda = new JButton("Ajuda");
+        JButton botaoEnviar = new JButton("Enviar");
         comandoTextField = new JTextField(20);
 
         JScrollPane scrollPane = criarScrollPane(infoTextArea);
@@ -46,9 +63,9 @@ public class DesempenhoJogoGUI extends JFrame {
         JSplitPane splitPane = criarSplitPane(scrollPane, minimapaLabel);
         JPanel painelSul = criarPainelSul(comandoTextField, botaoAjuda, botaoEnviar);
 
-        estilizarBotoes();
+        estilizarBotoes(botaoAjuda, botaoEnviar);
 
-        adicionarAcoesBotoes();
+        adicionarAcoesBotoes(botaoAjuda, botaoEnviar, comandoTextField);
 
         container.add(painelNorte, BorderLayout.NORTH);
         container.add(splitPane, BorderLayout.CENTER);
@@ -134,7 +151,7 @@ public class DesempenhoJogoGUI extends JFrame {
     // Método para criar JSplitPane
     private JSplitPane criarSplitPane(JScrollPane scrollPane, JLabel minimapaLabel) {
         JSplitPane splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, scrollPane, minimapaLabel);
-        splitPane.setResizeWeight(1);  // Define a proporção da divisão
+        splitPane.setResizeWeight(1); // Define a proporção da divisão
         return splitPane;
     }
 
@@ -148,7 +165,7 @@ public class DesempenhoJogoGUI extends JFrame {
     }
 
     // Método para estilizar botões
-    private void estilizarBotoes() {
+    private void estilizarBotoes(JButton botaoAjuda, JButton botaoEnviar) {
         botaoEnviar.setBorderPainted(false);
         botaoEnviar.setFocusPainted(false);
         botaoAjuda.setBorderPainted(false);
@@ -156,7 +173,7 @@ public class DesempenhoJogoGUI extends JFrame {
     }
 
     // Método para adicionar ações aos botões
-    private void adicionarAcoesBotoes() {
+    private void adicionarAcoesBotoes(JButton botaoAjuda, JButton botaoEnviar, JTextField comandoTextField) {
         botaoEnviar.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -181,7 +198,6 @@ public class DesempenhoJogoGUI extends JFrame {
         });
     }
 
-
     private void configTimer() {
         timer = new Timer(1000, new ActionListener() {
             @Override
@@ -195,15 +211,18 @@ public class DesempenhoJogoGUI extends JFrame {
 
     /**
      * Captura o comando digitado pelo jogador e o envia para o jogo.
+     * 
      * @param comando Comando digitado pelo jogador.
      */
     public void capturarComando(String comando) {
-        if(!jogo.analisarComando(comando)) infoTextArea.append("Comando inválido!\n");
+        if (!jogo.analisarComando(comando))
+            infoTextArea.append("Comando inválido!\n");
         comandoTextField.setText("");
     }
 
     /**
      * Atualiza as informacoes que estao sendo exibidas no terminal de comandos
+     * 
      * @param texto Texto a ser adicionado ao terminal de comandos
      */
     public void atualizarInfoTextArea(String texto) {
@@ -212,6 +231,7 @@ public class DesempenhoJogoGUI extends JFrame {
 
     /**
      * Atualiza o rótulo de trabalhos na interface gráfica.
+     * 
      * @param inventario Texto a ser exibido no rótulo de trabalhos.
      */
     public void atualizarLabelTrabalhos(String inventario) {
@@ -225,7 +245,7 @@ public class DesempenhoJogoGUI extends JFrame {
     private void alterarTempo() {
         int tempoRestante = tempoJogo.getTempoJogo();
 
-        if (tempoRestante > 0 && jogo.getJogando()) {
+        if (tempoRestante > 0 && jogo.getIsJogando()) {
             tempoJogo.setTempoJogo(tempoRestante - 1);
             atualizarLabelTempo();
         } else { // Aqui, o jogo termina.
@@ -249,10 +269,10 @@ public class DesempenhoJogoGUI extends JFrame {
     private void terminarJogo() {
         timer.stop();
         jogo.setJogando(false);
+        jogo.getSalvaArquivo();
         tempoLabel.setText("Tempo esgotado!");
-        comandoTextField.setEnabled(false);
-        botaoAjuda.setEnabled(false);
-        botaoEnviar.setEnabled(false);
+        comandoTextField.setEnabled(true);
         atualizarInfoTextArea("Tempo esgotado! Fim do jogo.");
+
     }
 }

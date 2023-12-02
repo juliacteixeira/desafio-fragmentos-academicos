@@ -1,11 +1,6 @@
-
-import javax.swing.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.util.ArrayList;
-import java.util.List;
 /**
  * Classe que representa o tempo do jogo.
+ * 
  * @author Caio Souza and João Dias
  * @version 2023.11.28
  */
@@ -15,6 +10,7 @@ public class Tempo {
 
     /**
      * Construtor para inicializar o tempo do jogo.
+     * 
      * @param tempoJogo O tempo inicial do jogo.
      */
     public Tempo(int tempoJogo) {
@@ -23,6 +19,7 @@ public class Tempo {
 
     /**
      * Obtém o tempo atual do jogo.
+     * 
      * @return O tempo atual do jogo.
      */
     public int getTempoJogo() {
@@ -43,6 +40,10 @@ public class Tempo {
     public void exibirTempo() {
         System.out.println("Tempo de jogo: " + tempoJogo);
     }
+
+    public String exibirTempoMinSeg() {
+        int minutos = getTempoJogo() / 60;
+        int segundos = getTempoJogo() % 60;
+        return minutos + " minutos e " + segundos + " segundos";
+    }
 }
-
-
