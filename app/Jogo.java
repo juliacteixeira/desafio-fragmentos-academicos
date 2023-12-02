@@ -1,6 +1,3 @@
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
 
 /**
  * Essa eh a classe principal do jogo Desafio Fragmentos Academicos.
