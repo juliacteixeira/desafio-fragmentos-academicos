@@ -1,10 +1,29 @@
-import javax.swing.*;
-import java.awt.*;
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Component;
+import java.awt.Container;
+import java.awt.Dimension;
+import java.awt.FlowLayout;
+import java.awt.Font;
+import java.awt.GridLayout;
+import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+import javax.swing.ImageIcon;
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JSplitPane;
+import javax.swing.JTextArea;
+import javax.swing.JTextField;
+import javax.swing.Timer;
+
 /**
- * Classe que representa a interface gráfica do desempenho do jogo com um visual de game adventure em texto.
+ * Classe que representa a interface gráfica do desempenho do jogo com um visual
+ * de game adventure em texto.
  *
  * Esta classe estende JFrame e implementa a interface InventarioDisciplinasGUI.
  *
@@ -132,7 +151,7 @@ public class DesempenhoJogoGUI extends JFrame {
     // Método para criar JSplitPane
     private JSplitPane criarSplitPane(JScrollPane scrollPane, JLabel minimapaLabel) {
         JSplitPane splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, scrollPane, minimapaLabel);
-        splitPane.setResizeWeight(1);  // Define a proporção da divisão
+        splitPane.setResizeWeight(1); // Define a proporção da divisão
         return splitPane;
     }
 
@@ -179,7 +198,6 @@ public class DesempenhoJogoGUI extends JFrame {
         });
     }
 
-
     private void configTimer() {
         timer = new Timer(1000, new ActionListener() {
             @Override
@@ -193,15 +211,18 @@ public class DesempenhoJogoGUI extends JFrame {
 
     /**
      * Captura o comando digitado pelo jogador e o envia para o jogo.
+     * 
      * @param comando Comando digitado pelo jogador.
      */
     public void capturarComando(String comando) {
-        if(!jogo.analisarComando(comando)) infoTextArea.append("Comando inválido!\n");
+        if (!jogo.analisarComando(comando))
+            infoTextArea.append("Comando inválido!\n");
         comandoTextField.setText("");
     }
 
     /**
      * Atualiza as informacoes que estao sendo exibidas no terminal de comandos
+     * 
      * @param texto Texto a ser adicionado ao terminal de comandos
      */
     public void atualizarInfoTextArea(String texto) {
@@ -210,6 +231,7 @@ public class DesempenhoJogoGUI extends JFrame {
 
     /**
      * Atualiza o rótulo de trabalhos na interface gráfica.
+     * 
      * @param inventario Texto a ser exibido no rótulo de trabalhos.
      */
     public void atualizarLabelTrabalhos(String inventario) {
