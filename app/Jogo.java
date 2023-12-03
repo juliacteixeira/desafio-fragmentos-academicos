@@ -20,7 +20,7 @@ public class Jogo
     private DesempenhoJogoGUI interfaceGUI;
     private Tempo tempo;
     private boolean joagndo;
-    private final int TEMPO_MAXIMO = 180; // Em segundos
+    private final int TEMPO_MAXIMO = 20; // Em segundos
 
     /**
      * Instancia o analisador de comandos do jogo.
@@ -225,8 +225,10 @@ public class Jogo
         if(jogador.getAmbienteAtual().temPendrive(index)) {
             Pendrive pendrive = jogador.getAmbienteAtual().getPendrive(index);
 
-            if(pendrive.estaAberto()) interfaceGUI.atualizarInfoTextArea("O pendrive já foi aberto.");
-            else pendrive.abrir(); // Polimorfismo é chamado baseado no tipo do pendrive
+            if(pendrive.estaAberto()) {
+                interfaceGUI.atualizarInfoTextArea("O pendrive já foi aberto.");
+                return;
+            } else pendrive.abrir(); // Polimorfismo é chamado baseado no tipo do pendrive
 
             // Verifica se o pendrive é um pendrive de disciplina
             if(pendrive instanceof PendriveDisciplina) {

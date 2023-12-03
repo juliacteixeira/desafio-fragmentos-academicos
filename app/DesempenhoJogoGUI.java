@@ -21,6 +21,8 @@ public class DesempenhoJogoGUI extends JFrame {
     private Timer timer;
     private Jogo jogo;
     private Tempo tempoJogo;
+    private JButton botaoAjuda;
+    private JButton botaoEnviar;
 
     public DesempenhoJogoGUI(Jogo jogo) {
         // Para chamar os metodos de jogo, temos que ter uma referencia a ele
@@ -34,8 +36,8 @@ public class DesempenhoJogoGUI extends JFrame {
 
         criarLabels();
 
-        JButton botaoAjuda = new JButton("Ajuda");
-        JButton botaoEnviar = new JButton("Enviar");
+        botaoAjuda = new JButton("Ajuda");
+        botaoEnviar = new JButton("Enviar");
         comandoTextField = new JTextField(20);
 
         JScrollPane scrollPane = criarScrollPane(infoTextArea);
@@ -44,9 +46,9 @@ public class DesempenhoJogoGUI extends JFrame {
         JSplitPane splitPane = criarSplitPane(scrollPane, minimapaLabel);
         JPanel painelSul = criarPainelSul(comandoTextField, botaoAjuda, botaoEnviar);
 
-        estilizarBotoes(botaoAjuda, botaoEnviar);
+        estilizarBotoes();
 
-        adicionarAcoesBotoes(botaoAjuda, botaoEnviar, comandoTextField);
+        adicionarAcoesBotoes();
 
         container.add(painelNorte, BorderLayout.NORTH);
         container.add(splitPane, BorderLayout.CENTER);
@@ -146,7 +148,7 @@ public class DesempenhoJogoGUI extends JFrame {
     }
 
     // Método para estilizar botões
-    private void estilizarBotoes(JButton botaoAjuda, JButton botaoEnviar) {
+    private void estilizarBotoes() {
         botaoEnviar.setBorderPainted(false);
         botaoEnviar.setFocusPainted(false);
         botaoAjuda.setBorderPainted(false);
@@ -154,7 +156,7 @@ public class DesempenhoJogoGUI extends JFrame {
     }
 
     // Método para adicionar ações aos botões
-    private void adicionarAcoesBotoes(JButton botaoAjuda, JButton botaoEnviar, JTextField comandoTextField) {
+    private void adicionarAcoesBotoes() {
         botaoEnviar.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -248,7 +250,9 @@ public class DesempenhoJogoGUI extends JFrame {
         timer.stop();
         jogo.setJogando(false);
         tempoLabel.setText("Tempo esgotado!");
-        comandoTextField.setEnabled(true);
+        comandoTextField.setEnabled(false);
+        botaoAjuda.setEnabled(false);
+        botaoEnviar.setEnabled(false);
         atualizarInfoTextArea("Tempo esgotado! Fim do jogo.");
     }
 }
