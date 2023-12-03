@@ -18,7 +18,7 @@ public class Jogo
     private Jogador jogador;
 
     private Tempo tempo;
-    private final int TEMPO_MAXIMO = 1800; // Em segundos
+    private final int TEMPO_MAXIMO = 180; // Em segundos
 
     /**
      * Instancia o analisador de comandos do jogo.
