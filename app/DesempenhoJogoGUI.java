@@ -32,6 +32,37 @@ public class DesempenhoJogoGUI extends JFrame {
         Container container = getContentPane();
         container.setLayout(new BorderLayout());
 
+        criarLabels();
+
+        JButton botaoAjuda = new JButton("Ajuda");
+        JButton botaoEnviar = new JButton("Enviar");
+        comandoTextField = new JTextField(20);
+
+        JScrollPane scrollPane = criarScrollPane(infoTextArea);
+        JLabel minimapaLabel = criarMinimapaLabel();
+        JPanel painelNorte = criarPainelNorte(tempoLabel, labelTrabalhos);
+        JSplitPane splitPane = criarSplitPane(scrollPane, minimapaLabel);
+        JPanel painelSul = criarPainelSul(comandoTextField, botaoAjuda, botaoEnviar);
+
+        estilizarBotoes(botaoAjuda, botaoEnviar);
+
+        adicionarAcoesBotoes(botaoAjuda, botaoEnviar, comandoTextField);
+
+        container.add(painelNorte, BorderLayout.NORTH);
+        container.add(splitPane, BorderLayout.CENTER);
+        container.add(painelSul, BorderLayout.SOUTH);
+
+        adicionarEventoComandoTextField();
+
+        configTimer();
+
+        setSize(1700, 900);
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setVisible(true);
+        setLocationRelativeTo(null);
+    }
+
+    private void criarLabels() {
         Font fonte = new Font("Courier New", Font.PLAIN, 14);
         labelTrabalhos = new JLabel();
         labelTrabalhos.setFont(fonte);
@@ -60,21 +91,27 @@ public class DesempenhoJogoGUI extends JFrame {
 
         // Define o alinhamento do texto para justificado
         infoTextArea.setAlignmentX(Component.LEFT_ALIGNMENT);
+    }
 
-        // Cria um JScrollPane e define a altura mínima preferida maior
+    // Método para criar JScrollPane
+    private JScrollPane criarScrollPane(JTextArea infoTextArea) {
         JScrollPane scrollPane = new JScrollPane(infoTextArea);
         scrollPane.setPreferredSize(new Dimension(getWidth() / 2, getHeight()));
+        return scrollPane;
+    }
 
-         // Cria um JLabel para o minimapa
+    // Método para criar JLabel do minimapa
+    private JLabel criarMinimapaLabel() {
         JLabel minimapaLabel = new JLabel();
-         minimapaLabel.setIcon(new ImageIcon("mapa.png")); // Substitua pelo caminho da sua imagem
-
-         // Defina o JLabel para ser opaco para permitir o background da imagem
+        minimapaLabel.setIcon(new ImageIcon("mapa.png")); // Substitua pelo caminho da sua imagem
         minimapaLabel.setOpaque(true);
         minimapaLabel.setBackground(null); // Define o fundo como nulo para que a imagem seja o background
+        return minimapaLabel;
+    }
 
-         // Adiciona rótulos de tempo e trabalhos ao painel norte
-         JPanel painelNorte = new JPanel(new GridLayout(2, 1)); // GridLayout para organizar em duas linhas
+    // Método para criar painel norte
+    private JPanel criarPainelNorte(JLabel tempoLabel, JLabel labelTrabalhos) {
+        JPanel painelNorte = new JPanel(new GridLayout(2, 1)); // GridLayout para organizar em duas linhas
         painelNorte.setBackground(Color.WHITE);
 
         // Subpainel para o rótulo de tempo
@@ -89,46 +126,35 @@ public class DesempenhoJogoGUI extends JFrame {
         subPainelTrabalhos.add(labelTrabalhos);
         painelNorte.add(subPainelTrabalhos);
 
-        container.add(painelNorte, BorderLayout.NORTH);
+        return painelNorte;
+    }
 
-        // Substitui o JPanel do mapa pelo JLabel do minimapa
+    // Método para criar JSplitPane
+    private JSplitPane criarSplitPane(JScrollPane scrollPane, JLabel minimapaLabel) {
         JSplitPane splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, scrollPane, minimapaLabel);
         splitPane.setResizeWeight(1);  // Define a proporção da divisão
+        return splitPane;
+    }
 
-        // Adiciona o JSplitPane ao container usando BorderLayout
-        container.add(splitPane, BorderLayout.CENTER);
-
-        // Adiciona campo de texto e botão "Enviar" no painel sul
+    // Método para criar painel sul
+    private JPanel criarPainelSul(JTextField comandoTextField, JButton botaoAjuda, JButton botaoEnviar) {
         JPanel painelSul = new JPanel(new BorderLayout());
-        comandoTextField = new JTextField(15);
-
-        // Adiciona campo de texto ao centro do painelSul
         painelSul.add(comandoTextField, BorderLayout.CENTER);
-
-        // Adiciona botão "Ajuda" estilizado ao painelSul
-        JButton botaoAjuda = new JButton("Ajuda");
-        botaoAjuda.setBackground(Color.BLACK);
-        botaoAjuda.setForeground(Color.WHITE);
         painelSul.add(botaoAjuda, BorderLayout.WEST);
-
-        // Adiciona botão "Enviar" estilizado ao painelSul
-        JButton botaoEnviar = new JButton("Enviar");
-        botaoEnviar.setBackground(Color.BLACK);
-        botaoEnviar.setForeground(Color.WHITE);
         painelSul.add(botaoEnviar, BorderLayout.EAST);
+        return painelSul;
+    }
 
-        // Estilo do botão Ajuda
+    // Método para estilizar botões
+    private void estilizarBotoes(JButton botaoAjuda, JButton botaoEnviar) {
         botaoEnviar.setBorderPainted(false);
         botaoEnviar.setFocusPainted(false);
-
-        // Estilo do botão Ajuda
         botaoAjuda.setBorderPainted(false);
         botaoAjuda.setFocusPainted(false);
+    }
 
-        // Organiza os componentes da interface gráfica
-        container.add(painelSul, BorderLayout.SOUTH);
-
-        // Adiciona ação para o botão "Enviar"
+    // Método para adicionar ações aos botões
+    private void adicionarAcoesBotoes(JButton botaoAjuda, JButton botaoEnviar, JTextField comandoTextField) {
         botaoEnviar.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -136,23 +162,25 @@ public class DesempenhoJogoGUI extends JFrame {
             }
         });
 
-        // Configura ações dos botões
         botaoAjuda.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 jogo.imprimirAjuda();
             }
         });
+    }
 
-        // Adiciona ação para o campo de texto (pressionar Enter)
+    private void adicionarEventoComandoTextField() {
         comandoTextField.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 capturarComando(comandoTextField.getText());
             }
         });
+    }
 
-        // Timer para controlar o tempo do jogo
+
+    private void configTimer() {
         timer = new Timer(1000, new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -161,11 +189,6 @@ public class DesempenhoJogoGUI extends JFrame {
             }
         });
         timer.start();
-
-        setSize(1700, 900);
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setVisible(true);
-        setLocationRelativeTo(null);
     }
 
     /**
@@ -204,11 +227,7 @@ public class DesempenhoJogoGUI extends JFrame {
             tempoJogo.setTempoJogo(tempoRestante - 1);
             atualizarLabelTempo();
         } else { // Aqui, o jogo termina.
-            timer.stop();
-            jogo.setJogando(false);
-            tempoLabel.setText("Tempo esgotado!");
-            comandoTextField.setEnabled(true);
-            atualizarInfoTextArea("Tempo esgotado! Fim do jogo.");
+            terminarJogo();
         }
     }
 
@@ -220,5 +239,16 @@ public class DesempenhoJogoGUI extends JFrame {
         int segundos = tempoJogo.getTempoJogo() % 60;
 
         tempoLabel.setText(String.format("Tempo Restante: %02d minutos e %02d segundos", minutos, segundos));
+    }
+
+    /**
+     * Método privado para terminar o jogo.
+     */
+    private void terminarJogo() {
+        timer.stop();
+        jogo.setJogando(false);
+        tempoLabel.setText("Tempo esgotado!");
+        comandoTextField.setEnabled(true);
+        atualizarInfoTextArea("Tempo esgotado! Fim do jogo.");
     }
 }
