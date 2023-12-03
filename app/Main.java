@@ -11,12 +11,13 @@ public class Main {
     public static void main(String[] args) {
         Jogo jogo = new Jogo();
 
-        SwingUtilities.invokeLater(() -> {
-            DesempenhoJogoGUI desempenhoJogoGUI = new DesempenhoJogoGUI(jogo.getTempo(), jogo.getJogador()); // Inicia a interface e passa as informacoes do jogo
-            desempenhoJogoGUI.setVisible(true);
+        SwingUtilities.invokeLater(new Runnable() {
+            public void run() {
+                DesempenhoJogoGUI desempenhoJogoGUI = new DesempenhoJogoGUI(jogo.getTempo(), jogo.getJogador());
+                desempenhoJogoGUI.setVisible(true);
+            }
         });
 
-        // Inicia o jogo
         jogo.jogar();
     }
 }
