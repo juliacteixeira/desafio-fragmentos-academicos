@@ -32,35 +32,27 @@ public class Analisador
     }
 
     /**
-     * @return O proximo comando do usuario
+     * @return Caso seja um comando valido, retorna um comando. Caso contrario, retorna null.
      */
-    public Comando pegarComando() 
-    {
-        String linha;   // guardara uma linha inteira
-        String palavra1 = null;
-        String palavra2 = null;
+    public Comando pegarComando(String comandoDigitado) {
+        String[] palavras = comandoDigitado.split(" ");
 
-        System.out.print("> ");     // imprime o prompt
+        boolean comandoValido = palavras.length == 2;
 
-        linha = entrada.nextLine();
+        if(comandoValido) {
+            String palavra1 = palavras[0];
+            String palavra2 = palavras[1];
 
-        // Tenta encontrar ate duas palavras na linha
-        Scanner tokenizer = new Scanner(linha);
-        if(tokenizer.hasNext()) {
-            palavra1 = tokenizer.next();      // pega a primeira palavra
-            if(tokenizer.hasNext()) {
-                palavra2 = tokenizer.next();      // pega a segunda palavra
-                // obs: nos simplesmente ignoramos o resto da linha.
-            }
+            return new Comando(palavrasDeComando.getComando(palavra1), palavra2);
         }
 
-        return new Comando(palavrasDeComando.getComando(palavra1), palavra2);
+        return  null;
     }
 
     /**
      * Chama o metodo imprimirComandos da classe PalavrasComando, evitando o aclopamento implicito.
      */
-    public void mostrarComandos() {
-        palavrasDeComando.imprimirComandos();
+    public String mostrarComandos() {
+        return palavrasDeComando.imprimirComandos();
     }
 }

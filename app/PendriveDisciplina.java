@@ -26,16 +26,7 @@ public class PendriveDisciplina extends Pendrive {
 
         if(!disciplinaTrabalho.estaCompleto()) {
             disciplinaTrabalho.setFragmentos(disciplinaTrabalho.getFragmentos() + 1);
-            exibirMensagemPendrive();
         }
-    }
-
-    /**
-     * Exibe uma mensagem informando que o pendrive foi aberto e que um fragmento de trabalho foi adicionado a disciplina.
-     */
-    private void exibirMensagemPendrive() {
-        String disciplinaNome = disciplina.getNome();
-        System.out.printf("Voce encontrou um pendrive da disciplina %s! Ele possui um fragmento de trabalho.\n", disciplinaNome);
     }
 }
 

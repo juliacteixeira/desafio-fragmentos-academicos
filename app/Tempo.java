@@ -1,4 +1,7 @@
 
+import javax.swing.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.List;
 /**
@@ -9,6 +12,7 @@ import java.util.List;
 
 public class Tempo {
     private int tempoJogo;
+
     /**
      * Construtor para inicializar o tempo do jogo.
      * @param tempoJogo O tempo inicial do jogo.

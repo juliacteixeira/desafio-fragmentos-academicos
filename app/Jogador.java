@@ -20,18 +20,6 @@ public class Jogador {
         inventarioDisciplinas = new Disciplinas();
     }
 
-    public void adicionarObservador(InventarioDisciplinasGUI observador) {
-        this.observador = observador;
-    }
-
-    public void notificarObservadores() {
-        observador.atualizarInventarioGUI();
-    }
-
-    public void mudouInventario() {
-        notificarObservadores();
-    }
-
     /**
      * Retorna as disciplinas que o jogador possui em seu inventário.
      *

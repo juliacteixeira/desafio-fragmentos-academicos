@@ -109,24 +109,24 @@ public class Ambiente {
      * Exibe todos os pendrives disponiveis no ambiente.
      * Verifica se todos os pendrives ja foram abertos.
      */
-    public void showPendrives() {
+    public String showPendrives() {
         int quantidadePendrives = pendrives.size();
         boolean todosAbertos = true;
+        String pendrivesAmbiente = "";
 
         if(quantidadePendrives == 0) {
-            System.out.println("Nao ha pendrives nesse ambiente!");
+            pendrivesAmbiente = "Nao ha pendrives nesse ambiente!";
         } else {
-            String pendrivesAbertos = "";
-
             for(int i = 0; i < quantidadePendrives; i++) {
                 Pendrive pendrive = pendrives.get(i);
                 if(!pendrive.estaAberto()) {
                     todosAbertos = false;
-                    pendrivesAbertos += "Pendrive " + (i + 1) + "\n";
+                    pendrivesAmbiente += "Pendrive " + (i + 1) + "\n";
                 }
             }
 
-            System.out.printf("%s", todosAbertos ? "Todos os pendrives ja foram abertos!\n" : "Pendrives: \n" + pendrivesAbertos);
         }
+
+        return todosAbertos ? "Todos os pendrives ja foram abertos!\n" : pendrivesAmbiente;
     }
 }

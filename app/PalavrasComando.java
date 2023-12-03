@@ -52,10 +52,13 @@ public class PalavrasComando
         return comandosValidos.containsKey(umaString);
     }
 
-    public void imprimirComandos() {
+    public String imprimirComandos() {
+        String comandos = "";
+
         for (String comando : comandosValidos.keySet()) {
-            System.out.print(comando + " ");
+            comandos += comando + " | ";
         }
-        System.out.println();
+
+        return comandos;
     }
 }
