@@ -1,4 +1,6 @@
-import javax.swing.SwingUtilities;
+import javax.swing.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 /**
  * Classe principal que inicia o jogo e a interface gráfica.
@@ -10,14 +12,6 @@ import javax.swing.SwingUtilities;
 public class Main {
     public static void main(String[] args) {
         Jogo jogo = new Jogo();
-
-        SwingUtilities.invokeLater(new Runnable() {
-            public void run() {
-                DesempenhoJogoGUI desempenhoJogoGUI = new DesempenhoJogoGUI(jogo.getTempo(), jogo.getJogador());
-                desempenhoJogoGUI.setVisible(true);
-            }
-        });
-
         jogo.jogar();
     }
 }

@@ -11,42 +11,35 @@ import java.awt.event.ActionListener;
  * @author João Dias
  * @version 2023.12.01
  */
-public class DesempenhoJogoGUI extends JFrame implements InventarioDisciplinasGUI {
+public class DesempenhoJogoGUI extends JFrame {
 
     // Variáveis de instância
-    private Tempo tempoJogo;
     private JLabel tempoLabel;
-    private JLabel labelTrabalhos = new JLabel();
-    private Timer timer;
-    private Jogador jogador;
+    private JLabel labelTrabalhos;
     private JTextField comandoTextField;
     private JTextArea infoTextArea;
+    private Timer timer;
+    private Jogo jogo;
+    private Tempo tempoJogo;
 
-    /**
-     * Construtor padrão da classe DesempenhoJogoGUI.
-     * Inicializa os componentes da interface gráfica, define o tempo inicial e configura o timer.
-     *
-     * @param tempoJogo Objeto Tempo representando o tempo do jogo.
-     * @param jogador   Objeto Jogador representando o jogador.
-     */
-    public DesempenhoJogoGUI(Tempo tempoJogo, Jogador jogador) {
-        this.tempoJogo = tempoJogo;
-        this.jogador = jogador;
-        this.jogador.adicionarObservador(this);
+    public DesempenhoJogoGUI(Jogo jogo) {
+        // Para chamar os metodos de jogo, temos que ter uma referencia a ele
+        this.jogo = jogo;
+        tempoJogo = jogo.getTempo();
 
         setTitle("Zephyrion: O Desafio dos Fragmentos Acadêmicos");
-
-        labelTrabalhos.setText(jogador.statusDisciplinas());
-
-        tempoLabel = new JLabel();
-        atualizarLabelTempo();
 
         Container container = getContentPane();
         container.setLayout(new BorderLayout());
 
         Font fonte = new Font("Courier New", Font.PLAIN, 14);
+        labelTrabalhos = new JLabel();
         labelTrabalhos.setFont(fonte);
+        labelTrabalhos.setText(jogo.getJogador().statusDisciplinas());
+
+        tempoLabel = new JLabel();
         tempoLabel.setFont(fonte.deriveFont(Font.BOLD, 18)); // Estilo negrito e tamanho maior
+        tempoLabel.setText("Iniciando o jogo...");
 
         // Adiciona um JTextArea estilizado para imprimir informações à direita
         infoTextArea = new JTextArea();
@@ -78,23 +71,23 @@ public class DesempenhoJogoGUI extends JFrame implements InventarioDisciplinasGU
 
          // Defina o JLabel para ser opaco para permitir o background da imagem
         minimapaLabel.setOpaque(true);
-         minimapaLabel.setBackground(null); // Define o fundo como nulo para que a imagem seja o background
+        minimapaLabel.setBackground(null); // Define o fundo como nulo para que a imagem seja o background
 
          // Adiciona rótulos de tempo e trabalhos ao painel norte
          JPanel painelNorte = new JPanel(new GridLayout(2, 1)); // GridLayout para organizar em duas linhas
         painelNorte.setBackground(Color.WHITE);
-
-        // Subpainel para os rótulos de trabalhos
-        JPanel subPainelTrabalhos = new JPanel(new FlowLayout(FlowLayout.CENTER));
-        subPainelTrabalhos.setBackground(Color.WHITE);
-        subPainelTrabalhos.add(labelTrabalhos);
-        painelNorte.add(subPainelTrabalhos);
 
         // Subpainel para o rótulo de tempo
         JPanel subPainelTempo = new JPanel(new FlowLayout(FlowLayout.CENTER));
         subPainelTempo.setBackground(Color.WHITE);
         subPainelTempo.add(tempoLabel);
         painelNorte.add(subPainelTempo);
+
+        // Subpainel para os rótulos de trabalhos
+        JPanel subPainelTrabalhos = new JPanel(new FlowLayout(FlowLayout.CENTER));
+        subPainelTrabalhos.setBackground(Color.WHITE);
+        subPainelTrabalhos.add(labelTrabalhos);
+        painelNorte.add(subPainelTrabalhos);
 
         container.add(painelNorte, BorderLayout.NORTH);
 
@@ -107,7 +100,7 @@ public class DesempenhoJogoGUI extends JFrame implements InventarioDisciplinasGU
 
         // Adiciona campo de texto e botão "Enviar" no painel sul
         JPanel painelSul = new JPanel(new BorderLayout());
-        comandoTextField = new JTextField(20);
+        comandoTextField = new JTextField(15);
 
         // Adiciona campo de texto ao centro do painelSul
         painelSul.add(comandoTextField, BorderLayout.CENTER);
@@ -125,30 +118,29 @@ public class DesempenhoJogoGUI extends JFrame implements InventarioDisciplinasGU
         painelSul.add(botaoEnviar, BorderLayout.EAST);
 
         // Estilo do botão Ajuda
-        botaoAjuda.setBorderPainted(false);
-        botaoAjuda.setFocusPainted(false);
-
-        // Estilo do botão Enviar
         botaoEnviar.setBorderPainted(false);
         botaoEnviar.setFocusPainted(false);
 
+        // Estilo do botão Ajuda
+        botaoAjuda.setBorderPainted(false);
+        botaoAjuda.setFocusPainted(false);
+
         // Organiza os componentes da interface gráfica
         container.add(painelSul, BorderLayout.SOUTH);
-
-        // Configura ações dos botões
-        botaoAjuda.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                System.exit(0);
-            }
-        });
 
         // Adiciona ação para o botão "Enviar"
         botaoEnviar.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                processarComando(comandoTextField.getText());
-                comandoTextField.setText("");
+                capturarComando(comandoTextField.getText());
+            }
+        });
+
+        // Configura ações dos botões
+        botaoAjuda.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                jogo.imprimirAjuda();
             }
         });
 
@@ -156,11 +148,11 @@ public class DesempenhoJogoGUI extends JFrame implements InventarioDisciplinasGU
         comandoTextField.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                processarComando(comandoTextField.getText());
-                comandoTextField.setText("");
+                capturarComando(comandoTextField.getText());
             }
         });
 
+        // Timer para controlar o tempo do jogo
         timer = new Timer(1000, new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -177,35 +169,47 @@ public class DesempenhoJogoGUI extends JFrame implements InventarioDisciplinasGU
     }
 
     /**
+     * Captura o comando digitado pelo jogador e o envia para o jogo.
+     * @param comando Comando digitado pelo jogador.
+     */
+    public void capturarComando(String comando) {
+        if(!jogo.analisarComando(comando)) infoTextArea.append("Comando inválido!\n");
+        comandoTextField.setText("");
+    }
+
+    /**
+     * Atualiza as informacoes que estao sendo exibidas no terminal de comandos
+     * @param texto Texto a ser adicionado ao terminal de comandos
+     */
+    public void atualizarInfoTextArea(String texto) {
+        infoTextArea.append(texto + "\n");
+    }
+
+    /**
+     * Atualiza o rótulo de trabalhos na interface gráfica.
+     * @param inventario Texto a ser exibido no rótulo de trabalhos.
+     */
+    public void atualizarLabelTrabalhos(String inventario) {
+        labelTrabalhos.setText(inventario);
+    }
+
+    /**
      * Método privado para decrementar o tempo de jogo.
      * Atualiza também a interface gráfica.
      */
     private void alterarTempo() {
         int tempoRestante = tempoJogo.getTempoJogo();
 
-        if (tempoRestante > 0) {
+        if (tempoRestante > 0 && jogo.getJogando()) {
             tempoJogo.setTempoJogo(tempoRestante - 1);
             atualizarLabelTempo();
         } else { // Aqui, o jogo termina.
             timer.stop();
-            System.out.println("Tempo esgotado! Fim do jogo.");
+            jogo.setJogando(false);
+            tempoLabel.setText("Tempo esgotado!");
+            comandoTextField.setEnabled(true);
+            atualizarInfoTextArea("Tempo esgotado! Fim do jogo.");
         }
-    }
-
-    /**
-     * Método privado para processar os comandos do jogo.
-     *
-     * @param comando Comando utilizado pelo jogador no chat.
-     */
-    private void processarComando(String comando) {
-        // Adiciona o comando ao JTextArea
-        infoTextArea.append(comando + "\n");
-
-        // Se desejar rolar automaticamente para o final do JTextArea:
-        infoTextArea.setCaretPosition(infoTextArea.getDocument().getLength());
-
-        // Limpa o JTextField
-        comandoTextField.setText("");
     }
 
     /**
@@ -216,17 +220,5 @@ public class DesempenhoJogoGUI extends JFrame implements InventarioDisciplinasGU
         int segundos = tempoJogo.getTempoJogo() % 60;
 
         tempoLabel.setText(String.format("Tempo Restante: %02d minutos e %02d segundos", minutos, segundos));
-    }
-
-    /**
-     * Método privado para atualizar o rótulo de trabalhos na interface gráfica.
-     */
-    private void atualizarLabelTrabalhos() {
-        labelTrabalhos.setText(jogador.statusDisciplinas());
-    }
-
-    @Override
-    public void atualizarInventarioGUI() {
-        atualizarLabelTrabalhos();
     }
 }

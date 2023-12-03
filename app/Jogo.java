@@ -1,3 +1,4 @@
+import javax.swing.*;
 
 /**
  * Essa eh a classe principal do jogo Desafio Fragmentos Academicos.
@@ -11,13 +12,14 @@
  * @version 2023.11.23
  */
 
-public class Jogo 
+public class Jogo
 {
     private Analisador analisador;
     private Ambientes ambientes;
     private Jogador jogador;
-
+    private DesempenhoJogoGUI interfaceGUI;
     private Tempo tempo;
+    private boolean joagndo;
     private final int TEMPO_MAXIMO = 180; // Em segundos
 
     /**
@@ -39,6 +41,10 @@ public class Jogo
 
         Ambiente ambienteInicial = ambientes.getAmbiente("meuQuarto");
         jogador.setAmbienteAtual(ambienteInicial);
+
+        // Controla a interface grafica apos os ambientes, jogador e itens serem criados
+        interfaceGUI = new DesempenhoJogoGUI(this);
+        interfaceGUI.setVisible(true);
     }
 
     public Tempo getTempo() {
@@ -49,38 +55,36 @@ public class Jogo
         return jogador;
     }
 
+    public boolean getJogando() {
+        return joagndo;
+    }
+
+    public void setJogando(boolean jogando) {
+        joagndo = jogando;
+    }
+
     /**
      *  Rotina principal do jogo. Fica em loop ate terminar o jogo.
      */
-    public void jogar()
-    {
-
+    public void jogar() {
+        joagndo = true;
         imprimirBoasVindas();
-
-        boolean terminado = false;
-        while (! terminado) {
-            if(jogador.disciplinasCompleta()) { // Verifica se o jogador completou todas as disciplinas, caso sim, o jogo termina.
-                imprimirFimDeJogo();
-                terminado = true;
-            } else {
-                Comando comando = analisador.pegarComando();
-                terminado = processarComando(comando);
-            }
-        }
-        System.out.println("Obrigado por jogar. Ate mais!");
     }
 
+    /**
+     * Imprime a mensagem de fim de jogo, em caso de vitoria.
+     */
     private void imprimirFimDeJogo() {
-        System.out.println("Parabens! Voce conseguiu entregar todos os trabalhos a tempo!");
-        System.out.println("Agora Zephyrion pode descansar e aproveitar as ferias.");
+        interfaceGUI.atualizarInfoTextArea("Parabens! Voce conseguiu entregar todos os trabalhos a tempo!");
+        interfaceGUI.atualizarInfoTextArea("Agora Zephyrion pode descansar e aproveitar as ferias.");
     }
 
     /**
      * Imprime informacoes sobre o ambiente atual.
      */
     private void imprimirInformacoesAmbiente() {
-        System.out.println(jogador.getAmbienteAtual().getDescricaoCompleta());
-        jogador.getAmbienteAtual().showPendrives();
+        interfaceGUI.atualizarInfoTextArea(jogador.getAmbienteAtual().getDescricaoCompleta());
+        interfaceGUI.atualizarInfoTextArea(jogador.getAmbienteAtual().showPendrives());
     }
 
     /**
@@ -88,15 +92,29 @@ public class Jogo
      */
     private void imprimirBoasVindas()
     {
-        System.out.println();
-        System.out.println("Bem-vindo ao Desafio dos Fragmentos Academico!");
-        System.out.println("O Desafio dos Fragmentos Acadêmicos se passa nos minutos finais do segundo semestre de 2023 na Universidade Federal de Lavras.");
-        System.out.println("Zephyrion, estudante de Sistemas de Informação, está sobrecarregado com disciplinas e precisa entregar quatro trabalhos a tempo.");
-        System.out.println("Voce comecara a patir do quarto de Zephyrion. Ajude ele a encontrar os fragmentos dos trabalhos e entregar a tempo!");
-        System.out.println("Digite '" + PalavraComando.AJUDA + "' se voce precisar de ajuda.");
-        System.out.println();
-        
+        interfaceGUI.atualizarInfoTextArea("Bem-vindo ao Desafio dos Fragmentos Academico!");
+        interfaceGUI.atualizarInfoTextArea("O Desafio dos Fragmentos Acadêmicos se passa nos minutos finais do segundo semestre de 2023 na Universidade Federal de Lavras.");
+        interfaceGUI.atualizarInfoTextArea("Zephyrion, estudante de Sistemas de Informação, está sobrecarregado com disciplinas e precisa entregar quatro trabalhos a tempo.");
+        interfaceGUI.atualizarInfoTextArea("Voce comecara a patir do quarto de Zephyrion. Ajude ele a encontrar os fragmentos dos trabalhos e entregar a tempo!");
+        interfaceGUI.atualizarInfoTextArea("Se estiver perdido, clique no botão AJUDA ao lado.");
+
         imprimirInformacoesAmbiente();
+    }
+
+    /**
+     * Dado um comando, processa-o (ou seja, executa-o) caso seja um comando valido
+     * @param comandoDigitado O Comando a ser processado.
+     * @return true se o comando finaliza o jogo.
+     */
+    public boolean analisarComando(String comandoDigitado) {
+        Comando comando = analisador.pegarComando(comandoDigitado);
+
+        if(comando != null) {
+            processarComando(comando);
+            return true;
+        }
+
+        return false;
     }
 
     /**
@@ -104,36 +122,19 @@ public class Jogo
      * @param comando O Comando a ser processado.
      * @return true se o comando finaliza o jogo.
      */
-    private boolean processarComando(Comando comando)
+    private void processarComando(Comando comando)
     {
-        boolean querSair = false;
-
         if(comando.ehDesconhecido()) {
-            System.out.println("Eu nao entendi o que voce disse...");
-            return false;
+            interfaceGUI.atualizarInfoTextArea("Eu nao entendi o que voce disse...");
+        } else {
+            PalavraComando palavraDeComando = comando.getPalavraDeComando();
+            if (palavraDeComando == PalavraComando.IR) {
+                irParaAmbiente(comando);
+            }
+            else if(palavraDeComando == PalavraComando.ABRIR) {
+                abrirPendrive(comando);
+            }
         }
-
-        PalavraComando palavraDeComando = comando.getPalavraDeComando();
-        if (palavraDeComando == PalavraComando.AJUDA) {
-            imprimirAjuda();
-        }
-        else if (palavraDeComando == PalavraComando.IR) {
-            irParaAmbiente(comando);
-        }
-        else if(palavraDeComando == PalavraComando.ABRIR) {
-            abrirPendrive(comando);
-        }
-        else if(palavraDeComando == PalavraComando.STATUS) {
-            statusInventarioDisciplinas();
-        }
-        else if (palavraDeComando == PalavraComando.TEMPO) {
-            tempo.exibirTempo();
-        }
-        else if (palavraDeComando == PalavraComando.SAIR) {
-            querSair = sair(comando);
-        }
-
-        return querSair;
     }
 
     // Implementacoes dos comandos do usuario
@@ -143,13 +144,11 @@ public class Jogo
      * Aqui nos imprimimos algo bobo e enigmatico e a lista de
      * palavras de comando
      */
-    private void imprimirAjuda()
+    public void imprimirAjuda()
     {
-        System.out.println("Voce esta perdido. Voce esta sozinho. Voce caminha");
-        System.out.println("pela universidade.");
-        System.out.println();
-        System.out.println("Suas palavras de comando sao:");
-        analisador.mostrarComandos();
+        interfaceGUI.atualizarInfoTextArea("Voce esta perdido. Voce esta sozinho. Voce caminha pela casa de Zephyrion.");
+        interfaceGUI.atualizarInfoTextArea("Suas palavras de comando sao:");
+        interfaceGUI.atualizarInfoTextArea(analisador.mostrarComandos());
     }
 
     /**
@@ -160,7 +159,7 @@ public class Jogo
     {
         if(!comando.temSegundaPalavra()) {
             // se nao ha segunda palavra, nao sabemos pra onde ir...
-            System.out.println("Ir pra onde?");
+            interfaceGUI.atualizarInfoTextArea("Ir pra onde?");
             return;
         }
 
@@ -181,7 +180,7 @@ public class Jogo
         }
 
         if (proximoAmbiente == null) {
-            System.out.println("Nao ha passagem!");
+            interfaceGUI.atualizarInfoTextArea("Nao ha passagem!");
         }
         else {
             jogador.setAmbienteAtual(proximoAmbiente);
@@ -193,8 +192,18 @@ public class Jogo
     /**
      * Imprime o status do inventario de disciplinas do jogador.
      */
-    private void statusInventarioDisciplinas() {
-        jogador.statusDisciplinas();
+    public void statusInventarioDisciplinas() {
+        interfaceGUI.atualizarInfoTextArea(jogador.statusDisciplinas());
+    }
+
+    /**
+     * Verifica se o jogador completou todas as disciplinas.
+     */
+    private void disciplinasCompleta() {
+        if(jogador.disciplinasCompleta()) {
+            imprimirFimDeJogo();
+            setJogando(false);
+        }
     }
 
     /**
@@ -205,7 +214,7 @@ public class Jogo
      */
     private void abrirPendrive(Comando comando) {
         if(!comando.temSegundaPalavra()) {
-            System.out.println("Qual pendrive?");
+            interfaceGUI.atualizarInfoTextArea("Qual pendrive?");
             return;
         }
 
@@ -216,17 +225,23 @@ public class Jogo
         if(jogador.getAmbienteAtual().temPendrive(index)) {
             Pendrive pendrive = jogador.getAmbienteAtual().getPendrive(index);
 
-            if(pendrive.estaAberto()) System.out.println("O pendrive já foi aberto.");
+            if(pendrive.estaAberto()) interfaceGUI.atualizarInfoTextArea("O pendrive já foi aberto.");
             else pendrive.abrir(); // Polimorfismo é chamado baseado no tipo do pendrive
 
             // Verifica se o pendrive é um pendrive de disciplina
             if(pendrive instanceof PendriveDisciplina) {
                 teleportarMeuQuarto();
-                jogador.mudouInventario();
+                interfaceGUI.atualizarLabelTrabalhos(jogador.statusDisciplinas());
+                disciplinasCompleta();
+            } if(pendrive instanceof  PendriveTempo) {
+                int tempo = ((PendriveTempo) pendrive).getTempoPendrive();
+
+                if(tempo > 0) interfaceGUI.atualizarInfoTextArea("Voce ganhou " + tempo + " segundos!");
+                else interfaceGUI.atualizarInfoTextArea("Voce perdeu " + tempo + " segundos!");
             }
         }
         else {
-            System.out.println("Nao ha um pendrive com esse numero!");
+            interfaceGUI.atualizarInfoTextArea("Nao ha um pendrive com esse numero!");
         }
     }
 
@@ -234,28 +249,11 @@ public class Jogo
      * Teleporta o jogador para o ambiente "meuQuarto" apos ele abrir um pendrive contendo um fragmento.
      */
     private void teleportarMeuQuarto() {
-        System.out.println("ZWOOSH!");
-        System.out.println("Voce encontrou um fragmento e foi teleportado para o seu quarto. Que loucura!");
-        System.out.println("Continue procurando os outros fragmentos.");
+        interfaceGUI.atualizarInfoTextArea("ZWOOSH!");
+        interfaceGUI.atualizarInfoTextArea("Voce encontrou um fragmento e foi teleportado para o seu quarto. Que loucura!");
+        interfaceGUI.atualizarInfoTextArea("Continue procurando os outros fragmentos.");
 
         jogador.setAmbienteAtual(ambientes.getAmbiente("meuQuarto"));
         imprimirInformacoesAmbiente();
-    }
-
-    /**
-     * "Sair" foi digitado. Verifica o resto do comando pra ver
-     * se nos queremos realmente sair do jogo.
-     * @return true, se este comando sai do jogo, false, caso contrario
-     */
-
-    private boolean sair(Comando comando)
-    {
-        if(comando.temSegundaPalavra()) {
-            System.out.println("Sair o que?");
-            return false;
-        }
-        else {
-            return true;
-        }
     }
 }

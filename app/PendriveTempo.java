@@ -31,15 +31,10 @@ public class PendriveTempo extends Pendrive {
     public void abrir() {
         super.setAberto(true);
         tempoJogo.alterarTempo(tempo);
-        exibirMensagemPendrive();
     }
 
-    /**
-     * Exibe uma mensagem informando que o pendrive foi aberto e que o tempo do jogo foi alterado.
-     */
-    private void exibirMensagemPendrive() {
-        System.out.printf("Você encontrou um pendrive de tempo! Ele possui uma %s de %d segundos.\n",
-                tempo > 0 ? "recompensa" : "penalidade", tempo);
+    public int getTempoPendrive() {
+        return tempo;
     }
 }
 

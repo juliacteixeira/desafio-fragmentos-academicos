@@ -1,5 +1,5 @@
 public enum PalavraComando {
-    IR("ir"), SAIR("sair"), AJUDA("ajuda"), DESCONHECIDO("?"), ABRIR("abrir"), STATUS("status"), TEMPO("tempo");
+    IR("ir"),  DESCONHECIDO("?"), ABRIR("abrir");
     private String palavraComando;
 
     /**
