@@ -22,5 +22,5 @@ Comando: ir sul
 Comando: ir norte
 Comando: abrir 1
 Comando: abrir 2
-Você finalizou o jogo com  0 minutos e 0 segundos restantes 
+Vocï¿½ finalizou o jogo com  0 minutos e 0 segundos restantes 
 ======================================================================
