@@ -1,5 +1,17 @@
-Comando: ir sul
 Comando: ir norte
+Comando: ir norte
+Vocï¿½ demorou 0 minutos e 0 segundos, para finalizar o jogo. 
+======================================================================
 Comando: ir sul
-Você finalizou o jogo com  0 minutos e 0 segundos restantes 
+Comando: abrir 3
+Comando: abrir 2
+Comando: abrir 2
+Vocï¿½ demorou 0 minutos e 0 segundos, para finalizar o jogo. 
+======================================================================
+Comando: ir sul
+Vocï¿½ demorou 0 minutos e 0 segundos, para finalizar o jogo. 
+======================================================================
+Comando: abrir 1
+Comando: abrir 2
+Vocï¿½ demorou 0 minutos e 0 segundos, para finalizar o jogo. 
 ======================================================================
