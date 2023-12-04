@@ -1,0 +1,5 @@
+Comando: abrir 1
+Comando: abrir 2
+Comando: abrir 3
+Você finalizou o jogo com  0 minutos e -3 segundos restantes 
+======================================================================
