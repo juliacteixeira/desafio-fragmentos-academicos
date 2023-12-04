@@ -1,7 +1,7 @@
 /**
  * Classe que representa o tempo do jogo.
  * 
- * @author Caio Souza and João Dias
+ * @author Caio Souza, João Dias and Júlia Teixeira
  * @version 2023.11.28
  */
 
@@ -46,4 +46,5 @@ public class Tempo {
         int segundos = getTempoJogo() % 60;
         return minutos + " minutos e " + segundos + " segundos";
     }
+
 }
