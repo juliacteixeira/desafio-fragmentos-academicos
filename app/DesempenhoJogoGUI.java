@@ -245,7 +245,7 @@ public class DesempenhoJogoGUI extends JFrame {
     private void alterarTempo() {
         int tempoRestante = tempoJogo.getTempoJogo();
 
-        if (tempoRestante > 0 && jogo.getJogando()) {
+        if (tempoRestante > 0 && jogo.getIsJogando()) {
             tempoJogo.setTempoJogo(tempoRestante - 1);
             atualizarLabelTempo();
         } else { // Aqui, o jogo termina.
@@ -269,8 +269,10 @@ public class DesempenhoJogoGUI extends JFrame {
     private void terminarJogo() {
         timer.stop();
         jogo.setJogando(false);
+        jogo.getSalvaArquivo();
         tempoLabel.setText("Tempo esgotado!");
         comandoTextField.setEnabled(true);
         atualizarInfoTextArea("Tempo esgotado! Fim do jogo.");
+
     }
 }

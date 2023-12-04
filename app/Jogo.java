@@ -11,7 +11,7 @@ import java.util.List;
  * e comeca o jogo.
  * Ela tambeme avalia e executa os comandos que o analisador retorna.
  *
- * @author Caio Souza
+ * @author Caio Souza e Júlia Teixeira
  * @version 2023.11.23
  */
 
@@ -20,10 +20,10 @@ public class Jogo {
     private Ambientes ambientes;
     private Jogador jogador;
     private DesempenhoJogoGUI interfaceGUI;
-    private List<Comando> comandos = new ArrayList<>();
     private Tempo tempo;
-    private boolean joagndo;
-    private final int TEMPO_MAXIMO = 180; // Em segundos
+    private boolean isJogando;
+    private final int TEMPO_MAXIMO = 20; // Em segundos
+    private List<Comando> comandos = new ArrayList<>();
 
     /**
      * Instancia o analisador de comandos do jogo.
@@ -57,20 +57,23 @@ public class Jogo {
         return jogador;
     }
 
-    public boolean getJogando() {
-        return joagndo;
+    public boolean getIsJogando() {
+        return isJogando;
     }
 
     public void setJogando(boolean jogando) {
-        joagndo = jogando;
+        isJogando = jogando;
+    }
+
+    public void getSalvaArquivo() {
+        this.salvaArquivo(comandos);
     }
 
     /**
      * Rotina principal do jogo. Fica em loop ate terminar o jogo.
      */
     public void jogar() {
-        joagndo = true;
-
+        isJogando = true;
         imprimirBoasVindas();
     }
 
@@ -114,7 +117,6 @@ public class Jogo {
      */
     public boolean analisarComando(String comandoDigitado) {
         Comando comando = analisador.pegarComando(comandoDigitado);
-
         if (comando != null) {
             processarComando(comando);
             return true;
@@ -130,7 +132,6 @@ public class Jogo {
      * @return true se o comando finaliza o jogo.
      */
     private void processarComando(Comando comando) {
-
         if (comando.ehDesconhecido()) {
             interfaceGUI.atualizarInfoTextArea("Eu nao entendi o que voce disse...");
         } else {
@@ -140,9 +141,8 @@ public class Jogo {
             } else if (palavraDeComando == PalavraComando.ABRIR) {
                 abrirPendrive(comando);
             }
-        }
 
-        comandos.add(comando);
+        }
 
     }
 
@@ -175,6 +175,10 @@ public class Jogo {
 
         Ambiente proximoAmbiente = null;
 
+        if (direcao.equals("norte") || direcao.equals("leste") || direcao.equals("sul") || direcao.equals("oeste")) {
+            comandos.add(comando);
+        }
+
         try {
             // Tenta obter o próximo ambiente com base na direção fornecida
             switch (direcao) {
@@ -195,14 +199,15 @@ public class Jogo {
             }
 
             if (proximoAmbiente == null) {
-                interfaceGUI.atualizarInfoTextArea("Nao ha passagem!");
+                interfaceGUI.atualizarInfoTextArea("Desculpe, não há passagem para o \" + direcao + \"!\"");
             } else {
                 jogador.setAmbienteAtual(proximoAmbiente);
                 imprimirInformacoesAmbiente();
             }
         } catch (IllegalArgumentException e) {
-            System.out.println(e.getMessage());
+            interfaceGUI.atualizarInfoTextArea(e.getMessage());
         }
+
     }
 
     /**
@@ -241,11 +246,13 @@ public class Jogo {
             int index = Integer.parseInt(numeroPendrive);
 
             if (jogador.getAmbienteAtual().temPendrive(index)) {
+                comandos.add(comando);
                 Pendrive pendrive = jogador.getAmbienteAtual().getPendrive(index);
 
-                if (pendrive.estaAberto())
+                if (pendrive.estaAberto()) {
                     interfaceGUI.atualizarInfoTextArea("O pendrive já foi aberto.");
-                else
+                    return;
+                } else
                     pendrive.abrir(); // Polimorfismo é chamado baseado no tipo do pendrive
 
                 // Verifica se o pendrive é um pendrive de disciplina
@@ -262,13 +269,13 @@ public class Jogo {
                     else
                         interfaceGUI.atualizarInfoTextArea("Voce perdeu " + tempo + " segundos!");
                 }
-
             } else {
                 interfaceGUI.atualizarInfoTextArea("Nao ha um pendrive com esse numero!");
             }
-        } catch (NumberFormatException e) {
-            interfaceGUI.atualizarInfoTextArea("Erro: Insira um número válido para o pendrive.");
+        } catch (IllegalArgumentException e) {
+            interfaceGUI.atualizarInfoTextArea(e.getMessage());
         }
+
     }
 
     /**
@@ -291,7 +298,7 @@ public class Jogo {
      *
      * @param lista Lista de comandos a serem salvos no arquivo.
      */
-    private void salvaArquivo(List<Comando> lista) {
+    public void salvaArquivo(List<Comando> lista) {
         try (FileWriter fileWriter = new FileWriter("comandos.txt", true)) {
             // Escreve cada comando da lista no arquivo, seguido por uma quebra de linha
             for (Comando item : lista) {
@@ -300,9 +307,9 @@ public class Jogo {
 
             // Registra o tempo total de jogo no arquivo
             fileWriter
-                    .write("Você demorou " + tempo.exibirTempoMinSeg() + ", para finalizar o jogo.");
+                    .write("Você finalizou o jogo com  " + tempo.exibirTempoMinSeg() + " restantes \n");
 
-            fileWriter.write("======================================================================");
+            fileWriter.write("======================================================================\n");
 
         } catch (IOException e) {
             // Imprime o rastreamento da exceção em caso de erro durante a escrita no
@@ -310,5 +317,4 @@ public class Jogo {
             e.printStackTrace();
         }
     }
-
 }

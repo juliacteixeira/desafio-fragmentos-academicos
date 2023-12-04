@@ -70,5 +70,4 @@ public class Comando {
     public String toString() {
         return "Comando: " + this.palavraDeComando + " " + this.segundaPalavra;
     }
-
 }
